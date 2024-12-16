@@ -20,6 +20,7 @@ class PlayerView():
     playing_duration = 0
     volume = 0.33
     muted = False
+    play_pause_btn = None
 
     def __new__(cls,app, *args, **kwargs):
         if not cls._instance:
@@ -62,6 +63,9 @@ class PlayerView():
         self.app.listen_view.update_list_musics_ui()
 
         self.update_btns()
+
+        self.coverart_selected_music.src = self.selected_music.coverart
+        self.coverart_selected_music.update()
     
     def pause_music(self):
         if self.state == PlayerState.PAUSED:
@@ -73,6 +77,17 @@ class PlayerView():
         self.player.update()
 
         self.update_btns()
+    
+    def play_pause_music(self):
+        if self.state != PlayerState.PLAYING:
+            self.play_music()
+            print('Playing')
+        else:
+            self.pause_music()
+            print('Paused')        
+       
+        self.update_btns()
+
 
     def stop_music(self):        
         # self.player.release()     
@@ -82,6 +97,24 @@ class PlayerView():
         self.state = PlayerState.STOPPED
         # print(self.state.value, self.selected_music.name)
         self.update_btns()
+    
+    def update_btns(self):
+        if self.state == PlayerState.PLAYING:
+            self.play_pause_btn.icon = ft.icons.PAUSE_CIRCLE
+            # self.play_btn.bgcolor = ft.colors.BLUE_400
+            # self.pause_btn.bgcolor = None
+        elif self.state == PlayerState.STOPPED:
+            self.play_pause_btn.icon = ft.icons.PLAY_CIRCLE
+            # self.play_btn.bgcolor = None
+            # self.pause_btn.bgcolor = None
+        elif self.state == PlayerState.PAUSED:    
+            self.play_pause_btn.icon = ft.icons.PLAY_CIRCLE
+            # self.pause_btn.bgcolor = ft.colors.BLUE_400
+            # self.play_btn.bgcolor = None
+        
+        self.play_pause_btn.update()
+        # self.play_btn.update()
+        # self.pause_btn.update()
     
     def state_player_changed(self, e):
         print('State changed to ', e.data)
@@ -173,8 +206,7 @@ class PlayerView():
             e.control.update()
         self.muted = not self.muted
         self.player.update()
-
-    
+   
     
     def format_duration(self, milliseconds):
         total_seconds = milliseconds // 1000
@@ -192,23 +224,15 @@ class PlayerView():
         self.progress_bar_ui.update()
         self.duration_indicator_ui.value = self.format_duration(position)
         self.duration_indicator_ui.update()
+        self.rotate_coverart_selected_music()
 
     def update_playing_duration(self, e):
-        self.playing_duration = int(e.data)
+        self.playing_duration = int(e.data)  
+              
     
-    def update_btns(self):
-        if self.state == PlayerState.PLAYING:
-            self.play_btn.bgcolor = ft.colors.BLUE_400
-            self.pause_btn.bgcolor = None
-        elif self.state == PlayerState.STOPPED:
-            self.play_btn.bgcolor = None
-            self.pause_btn.bgcolor = None
-        elif self.state == PlayerState.PAUSED:    
-            self.pause_btn.bgcolor = ft.colors.BLUE_400
-            self.play_btn.bgcolor = None
-        
-        self.play_btn.update()
-        self.pause_btn.update()
+    def rotate_coverart_selected_music(self ):
+        self.coverart_selected_music.rotate = ft.Rotate(angle=self.coverart_selected_music.rotate.angle + 90, alignment=ft.alignment.center)
+        self.coverart_selected_music.update()
 
     def build(self):
         self.player = ft.Audio(
@@ -235,70 +259,131 @@ class PlayerView():
         self.mute_unmute_btn = \
         ft.IconButton(
                     icon=ft.icons.VOLUME_MUTE,
-                    tooltip='Mute',
+                    tooltip='Mute',                    
                     icon_color=ft.colors.WHITE,
                     on_click=lambda e: self.mute_unmute_volume(e)
         )
 
         self.volume_control = \
-        ft.Slider(
-                min=0, 
+        ft.Slider(            
+                min=0,                         
                 max=100,
                 value=33,
                 scale=0.8,
-                # width=300,
-                expand=True,                                    
+                # height=3,
+                width=200,                                
                 divisions=100,
                 active_color=ft.colors.BLUE_600,                                     
                 label="{value}%", 
                 on_change=lambda e: self.set_volume(e)
         )
+        
 
-        self.play_btn = ft.IconButton(
-                                    col=1,
-                                    icon_size=35,
-                                    icon=ft.icons.PLAY_CIRCLE,
-                                    tooltip='Play',
-                                    icon_color=ft.colors.WHITE, 
-                                    on_click=lambda _: self.play_music())
+        # self.play_btn = ft.IconButton(
+        #                             col=1,
+        #                             icon_size=35,
+        #                             icon=ft.icons.PLAY_CIRCLE,
+        #                             tooltip='Play',
+        #                             icon_color=ft.colors.WHITE, 
+        #                             on_click=lambda _: self.play_music())
 
-        self.pause_btn = ft.IconButton(
+        # self.pause_btn = ft.IconButton(
+        #                             col=1,
+        #                             icon=ft.icons.PAUSE_CIRCLE,
+        #                             tooltip='Pause',
+        #                             icon_color=ft.colors.WHITE, 
+        #                             on_click=lambda _: self.pause_music())
+
+        self.play_pause_btn = ft.IconButton(
                                     col=1,
-                                    icon=ft.icons.PAUSE_CIRCLE,
-                                    tooltip='Pause',
-                                    icon_color=ft.colors.WHITE, 
-                                    on_click=lambda _: self.pause_music())
+                                    icon_size=33,
+                                    icon=ft.icons.PLAY_CIRCLE if self.state != PlayerState.PLAYING else ft.icons.PAUSE_CIRCLE,
+                                    tooltip='Play' if  self.state != PlayerState.PLAYING else 'Pause',
+                                    icon_color=ft.colors.WHITE,
+                                    on_click=lambda _: self.play_pause_music()
+        )
+
+        self.prev_btn = ft.IconButton(col=1,icon=ft.icons.SKIP_PREVIOUS,tooltip='Previous', icon_color=ft.colors.WHITE, on_click=lambda _: self.prev_music())
+        self.next_btn = ft.IconButton(col=1,icon=ft.icons.SKIP_NEXT,tooltip='Next',icon_color=ft.colors.WHITE, on_click=lambda _: self.next_music())
+        # self.stop_btn = ft.IconButton(col=1,icon=ft.icons.STOP_CIRCLE,tooltip='Stop',icon_color=ft.colors.WHITE, on_click=lambda _: self.stop_music())
+
+        self.coverart_selected_music = ft.Image(
+                                                src=self.selected_music.coverart if self.selected_music else 'default-music.png' ,
+                                                fit=ft.ImageFit.COVER, 
+                                                border_radius=25, 
+                                                width=40,
+                                                rotate=ft.Rotate(0),
+                                                )
 
         self.controls = \
         ft.Column(
             controls=[
                 ft.Row(
-                    alignment=ft.MainAxisAlignment.CENTER,           
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,           
                     controls=[   
-                                ft.IconButton(col=1,icon=ft.icons.SKIP_PREVIOUS,tooltip='Previous', icon_color=ft.colors.WHITE, on_click=lambda _: self.prev_music()),
-                                self.play_btn,
-                                self.pause_btn,
-                                ft.IconButton(col=1,icon=ft.icons.STOP_CIRCLE,tooltip='Stop',icon_color=ft.colors.WHITE, on_click=lambda _: self.stop_music()),
-                                ft.IconButton(col=1,icon=ft.icons.SKIP_NEXT,tooltip='Next',icon_color=ft.colors.WHITE, on_click=lambda _: self.next_music()),       
+                                ft.Container(
+                                    # expand=True,
+                                    padding=ft.padding.all(15),
+                                    width=60,
+                                    bgcolor=ft.colors.BLACK,
+                                    border_radius=50,
+                                    content= self.coverart_selected_music 
+                                ),
+                                ft.Container(
+                                    # expand=True,
+                                    content=ft.Row(
+                                        alignment=ft.MainAxisAlignment.CENTER,
+                                        controls=[
+                                            self.prev_btn,
+                                            self.play_pause_btn,                             
+                                            self.next_btn, 
+                                        ]
+                                    )
+                                ),
+                                ft.Container(
+                                    # expand=True,                                 
+                                    content= ft.Row(
+                                        alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                                        controls=[
+                                            ft.Stack(
+                                                controls=[
+                                                    ft.Container(
+                                                        padding=ft.padding.only(right=5),
+                                                        content=self.volume_control
+                                                    ),                                                    
+                                                    ft.Container(
+                                                        padding=ft.padding.only(top=3),
+                                                        content= self.mute_unmute_btn
+                                                    ),
+                                                                                              
+
+                                                ]
+                                            )
+                                            
+                                            
+                                        ]
+                                    )
+                                )
+                                                        
                             ]
                 ),
-                ft.Row(
-                    controls=[
-                         ft.Column(
-                            col=1,                          
-                            controls=[
-                                self.mute_unmute_btn, 
-                            ]
-                        ),
-                        ft.Column(  
-                            col=11,   
-                            expand=True,                     
-                            controls=[
-                                self.volume_control,
-                            ]
-                        )
-                    ]
-                )
+                # ft.Row(
+                #     controls=[
+                #          ft.Column(
+                #             col=1,                          
+                #             controls=[
+                #                 self.mute_unmute_btn, 
+                #             ]
+                #         ),
+                #         ft.Column(  
+                #             col=11,   
+                #             expand=True,                     
+                #             controls=[
+                #                 self.volume_control,
+                #             ]
+                #         )
+                #     ]
+                # )
             ]
         )
 

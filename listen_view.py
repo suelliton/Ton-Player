@@ -102,7 +102,7 @@ class ListenView():
 
     def update_list_musics_ui(self):   
         self.list_musics = Music.select().where(Music.playlist==self.app.left_view.selected_playlist)
-       
+             
         self.list_musics_ui.controls.clear()
         # self.list_musics_ui.rows.clear()
         # self.list_musics_ui.rows = [
@@ -393,7 +393,7 @@ class ListenView():
                 ft.ResponsiveRow(
                     controls=[
                             ft.Column(
-                                col={'sm':0, 'md':4},                               
+                                col={'xs':0,'sm':0, 'md':4},                               
                                 controls=[
                                     self.left_view.content_ui
                                 ]

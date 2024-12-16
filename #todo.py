@@ -9,10 +9,9 @@
 #5 - verificar se a lista de playlists contem scroll
 #6 - adicionar busca por album/playlist na aba listen_view
 #7 - melhorar apresentação da lista de músicas , usar como base a do spotify
-
 #7.1 - incluir github
-
 #8 - retirar botão de pause e stop, deixar apenas um botão play/pause e trazer o slide de volume para o mesmo alinhamento
+#20 - incluir uma arte de disco rotativa para indicar que o áudio está tocando
 
 
 #9 - verificar formas de avançar a música ao clicar na barra de carregamento, testar se com slider dá certo
@@ -26,7 +25,7 @@
 #17 - adicionar artista ao model playlist/album
 #18 - adicionar nome do album e embaixo o nome do artista na lista de playlist/album
 #19 - No drawer, analisar e retirar a rolagem do conteúdo todo, deixando apenas para a listview o scroll, deixando os outros elementos fixos
-#20 - incluir uma arte de disco rotativa para indicar que o áudio está tocando
 #21 - adicionar campo last_listen no model playlist/album, e ao dar player atualizar este campo para listar as playlists com os mais recentes ouvidos
 #22 - criar elementos de lista que se adaptem a tela em arquivo separado e depois repassar pro software
 #23 - adicionar suporte com pystray para controlar o player pela bandeja do sistema
+#24 - verificar container, alinhamentos das columns e rows para deixar a altura responsiva

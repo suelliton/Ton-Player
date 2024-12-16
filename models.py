@@ -25,7 +25,7 @@ class Playlist(BaseModel):
     
 class Music(BaseModel):
     id = peewee.AutoField()
-    playlist = peewee.ForeignKeyField(Playlist, backref='musics') 
+    playlist = peewee.ForeignKeyField(Playlist, backref='musics', on_delete='CASCADE') 
     title = peewee.CharField(default='My music of life')
     artist = peewee.CharField(default='Unknown')
     album = peewee.CharField(default='Unknown')

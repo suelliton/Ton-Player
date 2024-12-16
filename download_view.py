@@ -39,6 +39,7 @@ class DownloadView():
     
     def create_playlist(self, artist_name, album_name, coverart_album_url, album_dir):
         new_playlist, _ = Playlist.get_or_create(name=f'{artist_name} {album_name}', coverart=coverart_album_url)
+        print(f'Adicionando musicas a playlist: {new_playlist.name}')
         time.sleep(2)
         print('Listando arquivos do album em ', album_dir)
         files = self.list_files_in_directory(album_dir)

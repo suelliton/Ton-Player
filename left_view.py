@@ -1,5 +1,5 @@
 import flet as ft
-from models import Playlist
+from models import Playlist, Music
 import asyncio
 from threading import Thread
 import time
@@ -101,6 +101,7 @@ class LeftView():
         def background_task():
             try:
                 time.sleep(0.1)
+                Music.delete().where(Music.playlist == playlist).execute()
                 playlist.delete_instance()
                 print(f'Playlist {playlist.name} deleted')
             except:

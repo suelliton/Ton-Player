@@ -161,7 +161,7 @@ class App:
 
         self.tab_listen = ft.Container(
                     # width=400,
-                    height=590,
+                    height=620,
                     # col={'xs':12, 'sm':9}, 
                     alignment=ft.alignment.center,
                     bgcolor=ft.colors.BLACK12,
@@ -181,7 +181,7 @@ class App:
     
         self.tab_download = ft.Container(
                     # width=400,
-                    height=590,
+                    height=620,
                     # col={'xs':12, 'sm':9}, 
                     alignment=ft.alignment.center,
                     # bgcolor=ft.colors.WHITE,
