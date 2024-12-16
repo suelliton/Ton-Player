@@ -16,11 +16,22 @@ def sanitize_metadata(metadata):
 
 def get_audio_duration(file_path):
     if file_path.endswith(".mp3"):
-        audio = MP3(file_path)   
+        audio = MP3(file_path)
     else:
         raise ValueError("Formato de arquivo não suportado.")
-    print(f"Duração: {audio.info.length/60:.2f} segundos")        
-    return round(audio.info.length/60,2)
+    
+    # Obtém a duração em segundos
+    duration_in_seconds = audio.info.length
+    
+    # Converte para minutos e segundos
+    minutes = int(duration_in_seconds // 60)
+    seconds = int(duration_in_seconds % 60)
+    
+    # Formata como MM:SS
+    duration_formatted = f"{minutes}:{seconds:02d}"
+    print(f"Duração: {duration_formatted}")
+    
+    return duration_formatted
 
 
 

@@ -12,9 +12,10 @@
 #7.1 - incluir github
 #8 - retirar botão de pause e stop, deixar apenas um botão play/pause e trazer o slide de volume para o mesmo alinhamento
 #20 - incluir uma arte de disco rotativa para indicar que o áudio está tocando
-
-
 #9 - verificar formas de avançar a música ao clicar na barra de carregamento, testar se com slider dá certo
+
+
+
 #10- melhorar apresentação da listagem de playlist
 #11 - adicionar container colapse abaixo do elemento do ambum para mostrar nomes das faixas quando clicado em um botão 
 #12 - adicionar snackbar de notificações quando iniciar e quando terminar de baixar um album
@@ -29,3 +30,4 @@
 #22 - criar elementos de lista que se adaptem a tela em arquivo separado e depois repassar pro software
 #23 - adicionar suporte com pystray para controlar o player pela bandeja do sistema
 #24 - verificar container, alinhamentos das columns e rows para deixar a altura responsiva
+#25 - Apagar trechos de código comentado e salvar trechos importantes em examples

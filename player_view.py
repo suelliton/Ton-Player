@@ -66,6 +66,10 @@ class PlayerView():
 
         self.coverart_selected_music.src = self.selected_music.coverart
         self.coverart_selected_music.update()
+
+        self.total_duration_indicator_ui.value = self.selected_music.duration
+        self.total_duration_indicator_ui.update()
+
     
     def pause_music(self):
         if self.state == PlayerState.PAUSED:
@@ -214,25 +218,54 @@ class PlayerView():
         seconds = total_seconds % 60
         return f"{minutes}:{seconds:02d}"
     
+    # def update_progress_bar_ui(self, e):
+    #     position = int(e.data)
+    #     if self.playing_duration > 0:  # Evita divisão por zero
+    #         percent_position = ((position * 100) / self.playing_duration)/100
+    #     else:
+    #         percent_position = 0 
+    #     self.progress_bar_ui.value = percent_position
+    #     self.progress_bar_ui.update()
+    #     self.duration_indicator_ui.value = self.format_duration(position)
+    #     self.duration_indicator_ui.update()
+    #     self.rotate_coverart_selected_music()
+    
     def update_progress_bar_ui(self, e):
         position = int(e.data)
         if self.playing_duration > 0:  # Evita divisão por zero
             percent_position = ((position * 100) / self.playing_duration)/100
+            self.progress_bar_ui.max = self.playing_duration
         else:
             percent_position = 0 
-        self.progress_bar_ui.value = percent_position
+        self.progress_bar_ui.value = position
+        # self.progress_bar_ui.value = percent_position
         self.progress_bar_ui.update()
         self.duration_indicator_ui.value = self.format_duration(position)
         self.duration_indicator_ui.update()
         self.rotate_coverart_selected_music()
 
     def update_playing_duration(self, e):
+        print('update_playing_duration called')
         self.playing_duration = int(e.data)  
+        if self.playing_duration > self.progress_bar_ui.max: #atualiza o valor máximo para a progressbar 
+            self.progress_bar_ui.max = self.playing_duration
+            self.progress_bar_ui.divisions = self.playing_duration/1000
+            self.progress_bar_ui.update()
               
+    # def update_playing_duration(self, e):
+    #     self.playing_duration = int(e.data)  
     
     def rotate_coverart_selected_music(self ):
         self.coverart_selected_music.rotate = ft.Rotate(angle=self.coverart_selected_music.rotate.angle + 90, alignment=ft.alignment.center)
         self.coverart_selected_music.update()
+    
+    def seek_music(self, e):
+        print(f'Seeking music to {int(e.control.value)}')
+        self.player.seek(int(e.control.value))
+        self.player.update()
+        self.progress_bar_ui.value = e.control.value
+        self.progress_bar_ui.update()
+
 
     def build(self):
         self.player = ft.Audio(
@@ -240,7 +273,7 @@ class PlayerView():
             autoplay= False,
             volume=0.33,
             balance=0,
-            on_loaded=lambda _: self.player.play() ,
+            on_loaded=lambda _: self.player.play(),
             on_duration_changed=lambda e: self.update_playing_duration(e),
             on_position_changed=lambda e: self.update_progress_bar_ui(e),
             on_state_changed=lambda e:  self.state_player_changed(e),
@@ -250,11 +283,28 @@ class PlayerView():
 
 
 
+        # self.progress_bar_ui = \
+        # ft.ProgressBar(value=0,color=ft.colors.BLUE_600)
         self.progress_bar_ui = \
-        ft.ProgressBar(value=0,color=ft.colors.BLUE_600)
+        ft.Slider(            
+                min=0,                         
+                max=100000,
+                value=0,
+                scale=0.8,                
+                width=800,                                
+                divisions=1000,
+                active_color=ft.colors.BLUE_600,                                     
+                label="{value}%", 
+                height=20,
+                expand=True,
+                on_change=lambda e: self.seek_music(e)
+        )
 
         self.duration_indicator_ui = \
         ft.Text(value='0.00', color=ft.colors.WHITE, weight='bold')
+
+        self.total_duration_indicator_ui = \
+        ft.Text(value='0:00' , color=ft.colors.WHITE, weight='bold')
 
         self.mute_unmute_btn = \
         ft.IconButton(
@@ -269,15 +319,14 @@ class PlayerView():
                 min=0,                         
                 max=100,
                 value=33,
-                scale=0.8,
-                # height=3,
-                width=200,                                
+                scale=0.8,             
+                # width=300,        
+                expand=True,                        
                 divisions=100,
                 active_color=ft.colors.BLUE_600,                                     
                 label="{value}%", 
                 on_change=lambda e: self.set_volume(e)
-        )
-        
+        )        
 
         # self.play_btn = ft.IconButton(
         #                             col=1,
@@ -355,8 +404,6 @@ class PlayerView():
                                                         padding=ft.padding.only(top=3),
                                                         content= self.mute_unmute_btn
                                                     ),
-                                                                                              
-
                                                 ]
                                             )
                                             
@@ -392,21 +439,40 @@ class PlayerView():
             content= ft.Column(
                 alignment=ft.CrossAxisAlignment.CENTER,
                 controls=[
-                        ft.Row(
-                            # vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                            controls=[                                
-                                ft.Container(
-                                    expand=10,
-                                    # margin=ft.margin.only(left=20),
-                                    padding = ft.padding.only(left=20),
-                                    alignment=ft.alignment.center,
-                                    content = self.progress_bar_ui
-                                ),
-                                ft.Container(
-                                    expand=1,
-                                    alignment=ft.alignment.center,
-                                    content = self.duration_indicator_ui
-                                )
+                        ft.ResponsiveRow(
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            controls=[    
+                                ft.Stack(
+                                    controls=[
+                                        ft.Container( 
+                                            alignment=ft.alignment.center_left,     
+                                            padding=ft.padding.only(left=15),                                     
+                                            content= self.duration_indicator_ui
+                                        ),                                                                                    
+                                        ft.Container( 
+                                            alignment=ft.alignment.center_right,  
+                                            padding=ft.padding.only(right=15),                                           
+                                            content= self.total_duration_indicator_ui
+                                        ),                                                                                    
+                                        ft.Container(        
+                                            alignment=ft.alignment.center,                                       
+                                            content=self.progress_bar_ui
+                                        ),                                                    
+
+                                    ]
+                                )                            
+                                # ft.Container(
+                                #     expand=10,
+                                #     # margin=ft.margin.only(left=20),
+                                #     padding = ft.padding.only(left=20),
+                                #     alignment=ft.alignment.center,
+                                #     content = self.progress_bar_ui
+                                # ),
+                                # ft.Container(
+                                #     expand=1,
+                                #     alignment=ft.alignment.center,
+                                #     content = self.duration_indicator_ui
+                                # )
                             ]
                         ),
                         self.controls   
