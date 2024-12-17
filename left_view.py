@@ -171,9 +171,9 @@ class LeftView():
         #         )
         # ) for playlist in self.playlists                                
         # ]
-        self.playlists_ui.controls = [           
-            
+        self.playlists_ui.controls = [                       
                 ft.Container(
+                    padding= ft.padding.all(10),
                     bgcolor=ft.colors.BLACK45 if playlist == self.selected_playlist else ft.colors.BLACK12,
                     border=ft.Border(
                         bottom=ft.BorderSide(
@@ -187,10 +187,13 @@ class LeftView():
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
-                            ft.Image(
-                                src=playlist.coverart,
-                                fit=ft.ImageFit.COVER,
-                                width=50
+                            ft.Container(
+                                padding= ft.padding.only(right=10),
+                                content=ft.Image(
+                                    src=playlist.coverart,
+                                    fit=ft.ImageFit.COVER,
+                                    width=50,                                    
+                                )
                             ),
                             ft.Container(
                                 expand=True,

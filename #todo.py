@@ -17,8 +17,17 @@
 
 
 #10- melhorar apresentação da listagem de playlist
-#11 - adicionar container colapse abaixo do elemento do ambum para mostrar nomes das faixas quando clicado em um botão 
+
+
+
+#10.1 arranjar uma foto png para coverart playlist-default
+#10.2- na função de incluir músicas manualmente, incluir uma tarefa para incluir como coverart da playlist a coverart da primeira música
+#10.3- incluir as actions(...) com popupmenu na lista da musica para remover etc
+#10.4- investigar bug na atualização dos segundos da musica e da progressbar e da imagem que gira
+#11 -[download_view] adicionar container colapse abaixo do elemento do ambum para mostrar nomes das faixas quando clicado em um botão 
+#11.1 - adicionar função de notificação em utils para ser usada com mais facilidade
 #12 - adicionar snackbar de notificações quando iniciar e quando terminar de baixar um album
+#12.1- adicionar notificações 
 #13 - organizar em pastas os componentes, criar pasta views
 #14 - ao mudar de tab os elementos que são atualizados enquanto toca o audio não são encontrados pois eles são apagados da view, verificar possibilidade de apenas trocar eles de posição no array de controls da stack_main
 #15 - inluir nome do artista e album na pasta coverart para evitar conflitos de músicas com mesmo nome
@@ -31,3 +40,10 @@
 #23 - adicionar suporte com pystray para controlar o player pela bandeja do sistema
 #24 - verificar container, alinhamentos das columns e rows para deixar a altura responsiva
 #25 - Apagar trechos de código comentado e salvar trechos importantes em examples
+
+#26 - criar executável, empacotar para linux e criar um github pro projeto com github pages
+#27 - Testar por várias horas
+
+######### versão 1.1 ###########
+
+#1- incluir popup para editar o nome da playlist nos três pontinhos de cada playlist
