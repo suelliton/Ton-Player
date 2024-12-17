@@ -16,13 +16,13 @@
 #10- melhorar apresentação da listagem de playlist
 #10.5- incluir README.md
 #10.1 arranjar uma foto png para coverart playlist-default
-
-
-
-
-
 #10.2- na função de incluir músicas manualmente, incluir uma tarefa para incluir como coverart da playlist a coverart da primeira música
 #10.3- incluir as actions(...) com popupmenu na lista da musica para remover etc
+
+
+
+
+
 #10.4- investigar bug na atualização dos segundos da musica e da progressbar e da imagem que gira
 #11 -[download_view] adicionar container colapse abaixo do elemento do ambum para mostrar nomes das faixas quando clicado em um botão 
 #11.1 - adicionar função de notificação em utils para ser usada com mais facilidade

@@ -44,12 +44,14 @@ class App:
             self.is_sm = True 
              #hide album column from list_musics_ui header
             self.listen_view.header_list_musics_ui.controls[2].visible=False
+            self.listen_view.header_list_musics_ui.controls[3].visible=False
         else:  
             self.left_view.content_ui.visible = True           
             self.open_drawer_btn.visible = False
             self.is_sm = False
              #show album column from list_musics_ui header
             self.listen_view.header_list_musics_ui.controls[2].visible=True
+            self.listen_view.header_list_musics_ui.controls[3].visible=True
         
         self.listen_view.update_list_musics_ui()
        

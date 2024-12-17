@@ -243,18 +243,18 @@ class ListenView():
                                                         width=50
                                                 )
                                             ),  
-                                            ft.Column(
+                                            ft.Column(                                              
                                                 controls=[                                                    
                                                     ft.Text(
-                                                        value=music.title,
+                                                        value=music.title,                                                  
                                                         text_align=ft.TextAlign.START,
                                                         overflow=ft.TextOverflow.ELLIPSIS,
                                                         max_lines=1,
                                                         weight='bold',
                                                         color=ft.colors.WHITE,                                                        
-                                                    ),
+                                                    ),                                               
                                                     ft.Text(
-                                                        value=music.artist,
+                                                        value=music.artist,                                                  
                                                         text_align=ft.TextAlign.START,
                                                         overflow=ft.TextOverflow.ELLIPSIS,
                                                         max_lines=1,
@@ -267,12 +267,28 @@ class ListenView():
                             ft.Container(  
                                 expand=True,  
                                 visible= not self.app.is_sm,
+                                alignment=ft.alignment.center_right,
                                 content=ft.Text(value=music.album, color=ft.colors.WHITE,text_align='center')
                             ),                                                                                
                             ft.Container(   
-                                expand=True,                             
+                                expand=True,             
+                                visible= not self.app.is_sm,     
+                                alignment=ft.alignment.center_right,           
                                 content=ft.Text(value=music.duration.replace('.',':'), color=ft.colors.WHITE, text_align='center')
-                            ),                            
+                            ),   
+                            ft.Container(     
+                                expand=True,  
+                                alignment=ft.alignment.center_right,                                                              
+                                content=ft.PopupMenuButton(
+                                            icon=ft.icons.MORE_VERT,  
+                                            tooltip='Actions',
+                                            icon_size=20,       
+                                            items=[
+                                                ft.PopupMenuItem(text="Get metadata", on_click=lambda e, m=music: shazam.update_metadata(m, self.app)),
+                                                ft.PopupMenuItem(text="Remove", on_click=lambda e, m=music: self.remove_music(m)),
+                                            ]
+                                        )
+                            )                         
                         ]
                     )
                 ) for i, music in enumerate(self.list_musics)
@@ -368,11 +384,19 @@ class ListenView():
                     ft.Container(
                         expand=True, 
                         visible= not self.app.is_sm,
+                        alignment=ft.alignment.center_right,
                         content=ft.Text(value='Album', color=ft.colors.WHITE,text_align='center')
                     ),
                     ft.Container(
                         expand=True, 
+                        visible= not self.app.is_sm,
+                        alignment=ft.alignment.center_right,
                         content=ft.Icon(name=ft.icons.ACCESS_TIME, color=ft.colors.WHITE)
+                    ),
+                    ft.Container(
+                        expand=True, 
+                        alignment=ft.alignment.center_right,
+                        content=ft.Text(value='Actions', color=ft.colors.WHITE,text_align='center')
                     ),
                 ]
             )
