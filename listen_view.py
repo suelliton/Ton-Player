@@ -63,13 +63,22 @@ class ListenView():
         snack.open = True
         self.app.page.update()
 
-    
+    def add_playlist_coverart(self, playlist, files):
+        if len(files) >=1:
+            metadata = mutagen_mp3.extract_mp3_metadata(files[0].path)
+            metadata = sanitize_metadata(metadata)
+            if 'default-music' in metadata['coverart_path'] : 
+                playlist.coverart = 'default-playlist.png'
+            else:
+                playlist.coverart = metadata['coverart_path']
+            playlist.save()
  
     def add_music_to_playlist(self,files, selected_playlist):
         self.show_notification_adding_music()
         async def background_task():
             print('Selected', selected_playlist.name)
             time.sleep(0.1)
+            self.add_playlist_coverart(selected_playlist, files)
             if files:
                 for file in files:
                     duration = str(get_audio_duration(file.path))

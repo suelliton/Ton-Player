@@ -1,8 +1,6 @@
-#Presentation
-This is a music player constructed with python and flet framework.
+This is a music player builded with python and flet framework.
 
 #Features
-
 - Create playlist/album
 - Load musics file mp3 from hard disc
 - Search albums/artists in spotify

@@ -248,10 +248,12 @@ class PlayerView():
         print('update_playing_duration called')
         self.playing_duration = int(e.data)  
         if self.playing_duration > self.progress_bar_ui.max: #atualiza o valor máximo para a progressbar 
-            self.progress_bar_ui.max = self.playing_duration
-            self.progress_bar_ui.divisions = self.playing_duration/1000
-            self.progress_bar_ui.update()
-              
+            try:
+                self.progress_bar_ui.max = self.playing_duration
+                self.progress_bar_ui.divisions = self.playing_duration/1000
+                self.progress_bar_ui.update()
+            except Exception as e:
+                print(f'Erro ao atualizar playing duration: {e}')    
     # def update_playing_duration(self, e):
     #     self.playing_duration = int(e.data)  
     
@@ -359,8 +361,8 @@ class PlayerView():
         self.coverart_selected_music = ft.Image(
                                                 src=self.selected_music.coverart if self.selected_music else 'default-music.png' ,
                                                 fit=ft.ImageFit.COVER, 
-                                                border_radius=25, 
-                                                width=40,
+                                                border_radius=50, 
+                                                width=50,
                                                 rotate=ft.Rotate(0),
                                                 )
 
@@ -372,7 +374,7 @@ class PlayerView():
                     controls=[   
                                 ft.Container(
                                     # expand=True,
-                                    padding=ft.padding.all(15),
+                                    padding=ft.padding.all(1),
                                     width=60,
                                     bgcolor=ft.colors.BLACK,
                                     border_radius=50,

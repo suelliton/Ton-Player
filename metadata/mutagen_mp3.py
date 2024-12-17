@@ -39,7 +39,6 @@ def read_metadata(path='/home/sueliton/Músicas/teste/All My Dreams - Roxi Drive
 # read_metadata()
 
 
-
 def extract_mp3_metadata(mp3_file_path, output_folder="coverart"):
     try:
         # Verifica se o arquivo existe

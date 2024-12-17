@@ -13,14 +13,14 @@
 #8 - retirar botão de pause e stop, deixar apenas um botão play/pause e trazer o slide de volume para o mesmo alinhamento
 #20 - incluir uma arte de disco rotativa para indicar que o áudio está tocando
 #9 - verificar formas de avançar a música ao clicar na barra de carregamento, testar se com slider dá certo
-
-
-
 #10- melhorar apresentação da listagem de playlist
-
-
-
+#10.5- incluir README.md
 #10.1 arranjar uma foto png para coverart playlist-default
+
+
+
+
+
 #10.2- na função de incluir músicas manualmente, incluir uma tarefa para incluir como coverart da playlist a coverart da primeira música
 #10.3- incluir as actions(...) com popupmenu na lista da musica para remover etc
 #10.4- investigar bug na atualização dos segundos da musica e da progressbar e da imagem que gira
@@ -47,3 +47,4 @@
 ######### versão 1.1 ###########
 
 #1- incluir popup para editar o nome da playlist nos três pontinhos de cada playlist
+#2- Resolver pequeno bug, quando uma música tá pausada e clica-se em outra, a que estava tocando começa a tocar em vez da que foi clicada, sendo necessário um segundo clique

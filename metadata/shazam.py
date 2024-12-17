@@ -3,6 +3,8 @@ from shazamio import Shazam
 from models import Music
 from threading import Thread
 
+
+
 async def recognize_song(file_path):
     # Cria uma instância do Shazam
     shazam = Shazam()
@@ -99,18 +101,25 @@ def update_metadata(music, app):
     music.has_metadata = True
     music.save()
     app.listen_view.update_list_musics_ui()
+
+    return music
     # print(metadata.keys)
     # print('Timestamp',metadata['timestamp'])
     # print('Track',metadata['track'])
     # print('Tagid',metadata['tagid'])
 
-
+def add_playlist_coverart(playlist, coverart, app):  
+    playlist.coverart = coverart
+    playlist.save()
+    app.left_view.update_playlists_ui()
     
 def task_update_metadata_playlist(playlist, app):
     print('Running thread')
     musics = Music.select().where(Music.playlist == playlist, Music.has_metadata == False)
-    for music in musics:
-        update_metadata(music, app)
+    for i, music in enumerate(musics):
+        music = update_metadata(music, app)
+        if i == 0:
+            add_playlist_coverart(playlist, music.coverart, app)
         print(music.title)
 
 def update_metadata_playlist(playlist, app):
