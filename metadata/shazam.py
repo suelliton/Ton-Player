@@ -118,7 +118,7 @@ def task_update_metadata_playlist(playlist, app):
     musics = Music.select().where(Music.playlist == playlist, Music.has_metadata == False)
     for i, music in enumerate(musics):
         music = update_metadata(music, app)
-        if i == 0:
+        if i == 0 and 'default-playlist' in playlist.coverart:
             add_playlist_coverart(playlist, music.coverart, app)
         print(music.title)
 

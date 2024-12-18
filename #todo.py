@@ -18,13 +18,13 @@
 #10.1 arranjar uma foto png para coverart playlist-default
 #10.2- na função de incluir músicas manualmente, incluir uma tarefa para incluir como coverart da playlist a coverart da primeira música
 #10.3- incluir as actions(...) com popupmenu na lista da musica para remover etc
-
-
-
-
-
 #10.4- investigar bug na atualização dos segundos da musica e da progressbar e da imagem que gira
-#11 -[download_view] adicionar container colapse abaixo do elemento do ambum para mostrar nomes das faixas quando clicado em um botão 
+
+
+
+#11 -[download_view] adicionar container colapse abaixo do elemento do album para mostrar nomes das faixas quando clicado em um botão 
+# falta só incluir uma row abaixo da atual e uma colum circundando as row para o colapse funcionar de forma coerente
+
 #11.1 - adicionar função de notificação em utils para ser usada com mais facilidade
 #12 - adicionar snackbar de notificações quando iniciar e quando terminar de baixar um album
 #12.1- adicionar notificações 
@@ -48,3 +48,4 @@
 
 #1- incluir popup para editar o nome da playlist nos três pontinhos de cada playlist
 #2- Resolver pequeno bug, quando uma música tá pausada e clica-se em outra, a que estava tocando começa a tocar em vez da que foi clicada, sendo necessário um segundo clique
+#3- fazer uma geral nos arquivos, comentar o que for necessário, Incluir try catch onde necessita e informar o usuário quando houver um erro via notificação 

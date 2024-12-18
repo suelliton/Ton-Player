@@ -281,6 +281,7 @@ class ListenView():
                                 alignment=ft.alignment.center_right,                                                              
                                 content=ft.PopupMenuButton(
                                             icon=ft.icons.MORE_VERT,  
+                                            icon_color=ft.colors.WHITE,
                                             tooltip='Actions',
                                             icon_size=20,       
                                             items=[

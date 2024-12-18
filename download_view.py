@@ -18,6 +18,9 @@ class DownloadView():
     content_ui = None
     field_search_ui = None
     list_search_ui = None
+    list_musics_album_ui = None
+    container_collapse = None
+
     def __new__(cls,app, *args, **kwargs):
         if not cls._instance:
             cls._instance = super(DownloadView, cls).__new__(cls, *args, **kwargs)
@@ -108,7 +111,7 @@ class DownloadView():
         artist_name = result['artists'][0]['name']
         album_name = result['name'] 
         download_url = result['external_urls']['spotify'] 
-        coverart_album_url = result['images'][-2]['url']
+        coverart_album_url = result['images'][-2]['url']#pega uma definição media de imagem
         self.app.page.run_thread(self.download_album,artist_name, album_name,coverart_album_url, download_url, )
 
     def search_spotify(self, query, tipo="album"):
@@ -119,7 +122,55 @@ class DownloadView():
     #     tracks = spotify.album_tracks(album_id)
     #     print('Tracks', tracks)
     #     return tracks
-    
+    def toggle_visibility_list_musics_album(self, e, album):
+        collapses_containers = []
+        for column in self.list_search_ui.controls:
+            collapses_containers.append(column.controls[1].controls[0])
+
+        icon_key = e.control.key
+        container_key = icon_key.replace('icon','container')
+        print('container key', container_key)
+        container = [c for c in collapses_containers if c.key == container_key][0]
+
+        if e.control.icon == ft.icons.KEYBOARD_ARROW_DOWN:
+            # print('Keys',album.keys())
+            # print(album)
+            print('GET LIST MUSICS FROM SPOTIFY')
+            musics = spotify.album_tracks(album['id'])['items']
+            list_musics_album_ui = ft.ListView()
+            list_musics_album_ui.controls.clear()
+            list_musics_album_ui.controls = [
+                ft.Container(
+                    padding= ft.padding.all(10),                    
+                    content=ft.Row(
+                        controls=[
+                            ft.Text(value=f'{i+1} - ',color=ft.colors.WHITE),
+                            ft.Text(value=music['name'], color=ft.colors.WHITE)
+                        ]
+                    )
+                ) for i, music in enumerate(musics)
+            ]
+            container.content = list_musics_album_ui
+            container.visible = True
+            container.update()
+            list_musics_album_ui.update()
+            container.update()
+        else:
+            container.visible = False
+            container.update()
+
+        # self.list_search_ui.update()
+        # nonlocal is_visible  # Permite alterar a variável no escopo externo
+        # is_visible = not is_visible
+        # collapsible_container.visible = is_visible
+        # collapsible_container.update()
+
+        # Atualiza o ícone do botão
+        e.control.icon = (
+            ft.icons.KEYBOARD_ARROW_DOWN if e.control.icon == ft.icons.KEYBOARD_ARROW_UP else ft.icons.KEYBOARD_ARROW_UP
+        )
+        e.control.update()
+
     def search(self, e):
         search_text = self.field_search_ui.value
         print(search_text)
@@ -130,44 +181,65 @@ class DownloadView():
         type = 'album'
         results = self.search_spotify(search_text, type)        
 
+        self.list_musics_album_ui = ft.ListView()
+        self.container_collapse = ft.Container(visible=False, content=self.list_musics_album_ui)
+
         self.list_search_ui.controls = [
-        ft.Row(
-            alignment=ft.MainAxisAlignment.CENTER,   
-            spacing=20,
+        ft.Column(
             controls=[
-                ft.Column(                    
+                ft.Row(
+                    alignment=ft.MainAxisAlignment.CENTER,   
+                    spacing=20,
                     controls=[
-                        ft.Container(
-                            content=ft.Image(src=result['images'][-1]['url'] if result['images'][-1]['url'] else "default-playlist.jpg", fit=ft.ImageFit.COVER)
+                        ft.Column(                                       
+                            controls=[
+                                ft.Container(
+                                    content=ft.Image(src=result['images'][-1]['url'] if result['images'][-1]['url'] else "default-playlist.jpg", fit=ft.ImageFit.COVER)
+                                ),                        
+                            ]
                         ),
-                    ]
-                ),
-                ft.Column(                       
-                    alignment=ft.CrossAxisAlignment.CENTER,       
-                    width = 200, 
-                    expand_loose=True,
-                    controls=[                        
-                        ft.Container(
-                            padding=ft.padding.only(left = 10),
-                            content=ft.Text(value=result['name'],color=ft.colors.WHITE)
+                        ft.Column(                       
+                            alignment=ft.CrossAxisAlignment.END,       
+                            width = 200, 
+                            expand_loose=True,
+                            controls=[                        
+                                ft.Container(
+                                    padding=ft.padding.only(left = 10),
+                                    content=ft.Text(value=result['name'],weight='bold',color=ft.colors.WHITE)
+                                ),
+                                ft.Container(
+                                    padding=ft.padding.only(left = 10),
+                                    content=ft.Text(value=result['artists'][0]['name'],color=ft.colors.WHITE)
+                                ),       
+                                # ft.Container(key=f'container_{result['id']}',visible=True)     
+                            ]
                         ),
-                        ft.Container(
-                            padding=ft.padding.only(left = 10),
-                            content=ft.Text(value=result['artists'][0]['name'],weight='bold',color=ft.colors.WHITE)
-                        ),                        
-                    ]
+                        ft.Column(                 
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,                  
+                            controls=[  
+                                ft.IconButton(
+                                    alignment=ft.alignment.center_right,
+                                    icon=ft.icons.DOWNLOAD,
+                                    icon_color=ft.colors.WHITE,
+                                    on_click=lambda e, r=result: self.download(e, r)
+                                ),
+                                ft.Container(                       
+                                    content= ft.IconButton(
+                                        key=f'icon_{result['id']}',
+                                        icon=ft.icons.KEYBOARD_ARROW_DOWN,
+                                        icon_color= ft.colors.WHITE,
+                                        on_click= lambda e, a=result : self.toggle_visibility_list_musics_album(e, a),
+                                    ),
+                                )
+                            ]
+                        )
+                    ]  
                 ),
-                ft.Column(                 
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,                  
-                    controls=[ft.IconButton(
-                        alignment=ft.alignment.center_right,
-                        icon=ft.icons.DOWNLOAD,
-                        icon_color=ft.colors.WHITE,
-                        on_click=lambda e, r=result: self.download(e, r)
-                    )]
+                ft.Row(
+                    controls=[ft.Container(key=f'container_{result['id']}',visible=False)]
                 )
-            ]  
-        ) for result in results
+                ]
+            )for result in results
         ]
          
         self.list_search_ui.update()
@@ -190,6 +262,8 @@ class DownloadView():
 
             ]
         )
+
+
         self.content_ui = \
         ft.Container(            
             shadow=ft.BoxShadow(blur_radius=15,color=ft.colors.with_opacity(color=ft.colors.BLUE_400, opacity=0.3)),

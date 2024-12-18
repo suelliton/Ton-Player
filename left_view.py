@@ -207,6 +207,7 @@ class LeftView():
                             ),
                             ft.PopupMenuButton(
                                 icon=ft.icons.MORE_VERT,
+                                icon_color=ft.colors.WHITE,
                                 icon_size=20,
                                 items=[
                                     ft.PopupMenuItem(text="Edit"),

@@ -231,13 +231,17 @@ class PlayerView():
     #     self.rotate_coverart_selected_music()
     
     def update_progress_bar_ui(self, e):
+        print('Update progressbar',f'playing duration: {self.playing_duration}')
         position = int(e.data)
-        if self.playing_duration > 0:  # Evita divisão por zero
-            percent_position = ((position * 100) / self.playing_duration)/100
-            self.progress_bar_ui.max = self.playing_duration
-        else:
-            percent_position = 0 
-        self.progress_bar_ui.value = position
+        # if self.playing_duration > 0:  # Evita divisão por zero
+        #     percent_position = ((position * 100) / self.playing_duration)/100
+        #     # self.progress_bar_ui.max = self.playing_duration
+        # else:
+        #     percent_position = 0 
+        try:
+            self.progress_bar_ui.value = position
+        except:
+            print('ERRO NA ATUALIZAÇÃO DA POSICAO DA PROGRESSBAR')
         # self.progress_bar_ui.value = percent_position
         self.progress_bar_ui.update()
         self.duration_indicator_ui.value = self.format_duration(position)
@@ -245,15 +249,15 @@ class PlayerView():
         self.rotate_coverart_selected_music()
 
     def update_playing_duration(self, e):
-        print('update_playing_duration called')
         self.playing_duration = int(e.data)  
-        if self.playing_duration > self.progress_bar_ui.max: #atualiza o valor máximo para a progressbar 
-            try:
-                self.progress_bar_ui.max = self.playing_duration
-                self.progress_bar_ui.divisions = self.playing_duration/1000
-                self.progress_bar_ui.update()
-            except Exception as e:
-                print(f'Erro ao atualizar playing duration: {e}')    
+        print(f'update_playing_duration playing duration: {self.playing_duration} ')
+        # if self.playing_duration > self.progress_bar_ui.max: #atualiza o valor máximo para a progressbar 
+        try:
+            self.progress_bar_ui.max = self.playing_duration
+            self.progress_bar_ui.divisions = self.playing_duration/1000
+            self.progress_bar_ui.update()
+        except Exception as e:
+            print(f'Erro ao atualizar playing duration: {e}')    
     # def update_playing_duration(self, e):
     #     self.playing_duration = int(e.data)  
     
