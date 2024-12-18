@@ -231,17 +231,18 @@ class PlayerView():
     #     self.rotate_coverart_selected_music()
     
     def update_progress_bar_ui(self, e):
-        print('Update progressbar',f'playing duration: {self.playing_duration}')
+        # print('Update progressbar',f'playing duration: {self.playing_duration}')
         position = int(e.data)
         # if self.playing_duration > 0:  # Evita divisão por zero
         #     percent_position = ((position * 100) / self.playing_duration)/100
         #     # self.progress_bar_ui.max = self.playing_duration
         # else:
         #     percent_position = 0 
-        try:
-            self.progress_bar_ui.value = position
-        except:
-            print('ERRO NA ATUALIZAÇÃO DA POSICAO DA PROGRESSBAR')
+        self.progress_bar_ui.value = position            
+        # try:
+        #     if position <= self.progress_bar_ui.max:  
+        # except:
+        #     print('ERRO NA ATUALIZAÇÃO DA POSICAO DA PROGRESSBAR')
         # self.progress_bar_ui.value = percent_position
         self.progress_bar_ui.update()
         self.duration_indicator_ui.value = self.format_duration(position)

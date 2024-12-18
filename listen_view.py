@@ -267,17 +267,18 @@ class ListenView():
                             ft.Container(  
                                 expand=True,  
                                 visible= not self.app.is_sm,
-                                alignment=ft.alignment.center_right,
-                                content=ft.Text(value=music.album, color=ft.colors.WHITE,text_align='center')
+                                alignment=ft.alignment.center,
+                                content=ft.Text(value=music.album, color=ft.colors.WHITE,text_align=ft.TextAlign.CENTER)
                             ),                                                                                
                             ft.Container(   
-                                expand=True,             
+                                # expand=True,           
+                                padding=ft.padding.symmetric(horizontal=30),  
                                 visible= not self.app.is_sm,     
                                 alignment=ft.alignment.center_right,           
-                                content=ft.Text(value=music.duration.replace('.',':'), color=ft.colors.WHITE, text_align='center')
+                                content=ft.Text(value=music.duration.replace('.',':'), color=ft.colors.WHITE, text_align=ft.TextAlign.CENTER)
                             ),   
                             ft.Container(     
-                                expand=True,  
+                                # expand=True,  
                                 alignment=ft.alignment.center_right,                                                              
                                 content=ft.PopupMenuButton(
                                             icon=ft.icons.MORE_VERT,  
@@ -385,17 +386,18 @@ class ListenView():
                     ft.Container(
                         expand=True, 
                         visible= not self.app.is_sm,
-                        alignment=ft.alignment.center_right,
+                        alignment=ft.alignment.center,
                         content=ft.Text(value='Album', color=ft.colors.WHITE,text_align='center')
                     ),
                     ft.Container(
-                        expand=True, 
+                        # expand=True, 
                         visible= not self.app.is_sm,
+                        padding=ft.padding.symmetric(horizontal=30),  
                         alignment=ft.alignment.center_right,
                         content=ft.Icon(name=ft.icons.ACCESS_TIME, color=ft.colors.WHITE)
                     ),
                     ft.Container(
-                        expand=True, 
+                        # expand=True, 
                         alignment=ft.alignment.center_right,
                         content=ft.Text(value='Actions', color=ft.colors.WHITE,text_align='center')
                     ),
