@@ -19,6 +19,7 @@ class App:
     tab_download = None
     title_tab_selected = None   
     is_sm = False
+    selected_tab = 'tab_listen'
 
     def __new__(cls, page: ft.Page, *args, **kwargs):
         if not cls._instance:
@@ -42,14 +43,14 @@ class App:
             self.left_view.content_ui.visible = False
             self.open_drawer_btn.visible = True           
             self.is_sm = True 
-             #hide album column from list_musics_ui header
+             #hide album column and duration from list_musics_ui header
             self.listen_view.header_list_musics_ui.controls[2].visible=False
             self.listen_view.header_list_musics_ui.controls[3].visible=False
         else:  
             self.left_view.content_ui.visible = True           
             self.open_drawer_btn.visible = False
             self.is_sm = False
-             #show album column from list_musics_ui header
+             #show album column and duration from list_musics_ui header
             self.listen_view.header_list_musics_ui.controls[2].visible=True
             self.listen_view.header_list_musics_ui.controls[3].visible=True
         
@@ -68,6 +69,7 @@ class App:
     
     def select_listen_view(self, e):
         print('Selected listen view')
+        self.selected_tab = self.tab_listen.key
         self.stack_main.controls.clear()
         self.stack_main.controls.append(self.tab_listen) 
         self.stack_main.update()
@@ -77,6 +79,7 @@ class App:
 
     def select_download_view(self, e):
         print('Selected download view')
+        self.selected_tab = self.tab_download.key
         self.stack_main.controls.clear()
         self.stack_main.controls.append(self.tab_download) 
         self.stack_main.update()
@@ -162,6 +165,7 @@ class App:
         
 
         self.tab_listen = ft.Container(
+                    key='tab_listen',
                     # width=400,
                     height=620,
                     # col={'xs':12, 'sm':9}, 
@@ -182,6 +186,7 @@ class App:
         )
     
         self.tab_download = ft.Container(
+                    key='tab_download',
                     # width=400,
                     height=620,
                     # col={'xs':12, 'sm':9}, 
@@ -218,17 +223,18 @@ class App:
         )
         
         self.stack_main = \
-        ft.Stack([
-            # ft.Divider(),
-            ft.ResponsiveRow(    
-                columns=12,
-                vertical_alignment=ft.MainAxisAlignment.CENTER,
-                controls=[
-                            # self.left_view.content_ui,
-                            # self.main_view.content_ui
+        ft.Stack(            
+            controls = [           
+                ft.ResponsiveRow(    
+                    columns=12,
+                    vertical_alignment=ft.MainAxisAlignment.CENTER,
+                    controls=[
                             self.tab_listen
-                          ],                        
-                )],
+                                # self.left_view.content_ui,
+                                # self.main_view.content_ui
+                            ],                        
+                )
+            ],
         )
     
         self.page.add(self.stack_main)

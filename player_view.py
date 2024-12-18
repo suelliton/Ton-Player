@@ -231,6 +231,9 @@ class PlayerView():
     #     self.rotate_coverart_selected_music()
     
     def update_progress_bar_ui(self, e):
+        if self.app.selected_tab != 'tab_listen':
+            return         
+        # print('page controls',self.app.page.get_control('stack'))
         # print('Update progressbar',f'playing duration: {self.playing_duration}')
         position = int(e.data)
         # if self.playing_duration > 0:  # Evita divisão por zero
