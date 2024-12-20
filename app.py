@@ -156,14 +156,15 @@ class App:
                     )
                 ]
             )
+       
         self.page.add(
             self.header_ui
         )
+       
         self.listen_view = ListenView(self)
         self.download_view = DownloadView(self)
 
         
-
         self.tab_listen = ft.Container(
                     key='tab_listen',
                     # width=400,

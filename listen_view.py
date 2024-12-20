@@ -110,6 +110,7 @@ class ListenView():
         self.app.page.run_thread(background_task)       
 
     def update_list_musics_ui(self):   
+        print('Update_list_musics_ui')
         self.list_musics = Music.select().where(Music.playlist==self.app.left_view.selected_playlist)
              
         self.list_musics_ui.controls.clear()
@@ -206,6 +207,7 @@ class ListenView():
         #                 ]
         #                 ) for music in self.list_musics
         #             ]        
+        
         self.list_musics_ui.controls = [
              ft.Container(
                     bgcolor=ft.colors.with_opacity(color=ft.colors.BLUE_500, opacity=0.3) if music == self.player_view.selected_music else ft.colors.BLACK12,
@@ -223,6 +225,7 @@ class ListenView():
                     ink_color=ft.colors.WHITE,
                     on_click=lambda e, m=music: self.player_view.play_music(m),
                     # on_hover=lambda e, m=music: highlight_item(e, m),
+                    key=f'music-item-{music.id}',
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[         
@@ -320,7 +323,13 @@ class ListenView():
         #         ]
         #     )
         # ] + self.list_musics_ui.controls
-        self.list_musics_ui.update()
+        
+        # self.list_musics_ui.update()
+        if self.player_view.selected_music:
+            key_to_focus = f'music-item-{self.player_view.selected_music.id}' 
+            self.list_musics_ui.scroll_to(key=key_to_focus,offset=0, duration=1000)          
+        self.list_musics_ui.update()            
+
 
     def build(self):
         self.file_picker = ft.FilePicker(
@@ -403,7 +412,7 @@ class ListenView():
                     ),
                 ]
             )
-        self.list_musics_ui = ft.ListView()
+        self.list_musics_ui = ft.Column(scroll=ft.ScrollMode.ALWAYS)
 
         self.add_music_btn = ft.ElevatedButton(
                         text='musics',

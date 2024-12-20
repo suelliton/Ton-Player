@@ -34,6 +34,9 @@ class PlayerView():
             self.build()
     
     def play_music(self, music=None):
+        # self.selected_music = music
+        # self.app.listen_view.update_list_musics_ui()   
+        # return 
         if self.state == PlayerState.STOPPED:
             if not music:
                 if not self.selected_music:
@@ -60,7 +63,16 @@ class PlayerView():
             print(self.state.value, self.selected_music.title)
         else:
             print('No selected music')
-        self.app.listen_view.update_list_musics_ui()
+
+        self.app.listen_view.update_list_musics_ui()   
+        # if self.selected_music:
+        #     key_to_focus = f'music-item-{self.selected_music.id}' 
+        #     from utils import find_control_by_key_in_control
+        #     el = find_control_by_key_in_control(self.app.listen_view.list_musics_ui, key_to_focus)
+        #     el.bgcolor= 'blue'
+        #     el.update()
+        #     self.app.listen_view.list_musics_ui.scroll_to(key=key_to_focus,offset=0, duration=500)
+
 
         self.update_btns()
 
@@ -187,15 +199,16 @@ class PlayerView():
     #     self.player.update()
     #     print('Volume', self.player.volume)
     
-    def set_volume(self, e):       
+    def set_volume(self, e):            
         self.volume = float(e.control.value/100)
-        self.player.volume = self.volume
+        self.player.volume = self.volume     
         self.player.update()
 
         self.muted = False
         self.mute_unmute_btn.icon = ft.icons.VOLUME_MUTE
         self.mute_unmute_btn.icon_color = ft.colors.WHITE
         self.mute_unmute_btn.update()
+           
 
     def mute_unmute_volume(self, e):
         if self.muted:
@@ -266,7 +279,7 @@ class PlayerView():
     #     self.playing_duration = int(e.data)  
     
     def rotate_coverart_selected_music(self ):
-        self.coverart_selected_music.rotate = ft.Rotate(angle=self.coverart_selected_music.rotate.angle + 90, alignment=ft.alignment.center)
+        self.coverart_selected_music.rotate = ft.Rotate(angle=self.coverart_selected_music.rotate.angle + 33, alignment=ft.alignment.center)
         self.coverart_selected_music.update()
     
     def seek_music(self, e):
@@ -277,8 +290,8 @@ class PlayerView():
         self.progress_bar_ui.update()
 
 
-    def build(self):
-        self.player = ft.Audio(
+    def build(self):        
+        self.player = ft.Audio(   
             src='Silent_short.mp3',
             autoplay= False,
             volume=0.33,
@@ -287,12 +300,13 @@ class PlayerView():
             on_duration_changed=lambda e: self.update_playing_duration(e),
             on_position_changed=lambda e: self.update_progress_bar_ui(e),
             on_state_changed=lambda e:  self.state_player_changed(e),
-            # on_seek_complete=lambda _: self.next_music(),
+            # on_seek_complete=lambda _: self.next_music(),      
         )
-        self.app.page.overlay.append(self.player)
+        
 
+        self.app.page.overlay.append(self.player)     
 
-
+       
         # self.progress_bar_ui = \
         # ft.ProgressBar(value=0,color=ft.colors.BLUE_600)
         self.progress_bar_ui = \
@@ -336,6 +350,7 @@ class PlayerView():
                 active_color=ft.colors.BLUE_600,                                     
                 label="{value}%", 
                 on_change=lambda e: self.set_volume(e)
+                
         )        
 
         # self.play_btn = ft.IconButton(
