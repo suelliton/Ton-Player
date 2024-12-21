@@ -67,17 +67,19 @@ class App():
 
         #Player initializations
 
+        ################################### FLET PLAYER #####################################
+
         #Initialization for FletPlayer(ft.Audio)
         #relative path using assets_dir from flet config
-        # silent_path = '/musics/silent_short.mp3' 
+        # silent_path = '/musics/silent-short.mp3' 
         # flower_path = '/musics/jisoo-flower.mp3'
         # whiplash_path = '/musics/aespa-whiplash.mp3'
         # supernova_short_path = '/musics/aespa-supernova-short.mp3'
         # drama_path = '/musics/aespa-drama.mp3'
 
         # self.player = FletPlayer(
-        #     src=silent_path,
         #     page=self.page,
+        #     src=silent_path,
         #     on_load=show_load,
         #     on_play=show_play,
         #     on_stopped=show_stopped,
@@ -87,12 +89,14 @@ class App():
         #     on_duration_changed=show_duration_total,
         #     on_state_changed=on_state_changed
         # )
-        #self.player.initialize()        
+        # self.player.initialize()      
+         
+        ################################### FLET PLAYER #####################################  
 
-
+        ################################### VLC PLAYER #####################################
         #Initialization for VlcPlayer(VLC player library)
         #relative path from actual dir, don't understand assets_dir config from flet
-        silent_path = './assets/musics/silent_short.mp3' 
+        silent_path = './assets/musics/silent-short.mp3' 
         flower_path = './assets/musics/jisoo-flower.mp3'
         whiplash_path = './assets/musics/aespa-whiplash.mp3'
         supernova_short_path = './assets/musics/aespa-supernova-short.mp3'
@@ -109,6 +113,8 @@ class App():
             on_state_changed=on_state_changed
         )
         self.player.initialize()        
+
+        ################################### VLC PLAYER #####################################
 
 
         #UI elements initialization

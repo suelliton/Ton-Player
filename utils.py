@@ -33,6 +33,18 @@ def get_audio_duration(file_path):
     
     return duration_formatted
 
+def transform_millisseconds_to_mm_ss(millisseconds):
+    # transform duration millisseconds in seconds
+    duration_in_seconds = millisseconds/1000            
+    # Convert to minutes and seconds
+    minutes = int(duration_in_seconds // 60)
+    seconds = int(duration_in_seconds % 60)            
+    # Format like MM:SS
+    duration_formatted = f"{minutes}:{seconds:02d}"
+    print(f"Duration: {duration_formatted}")
+    return duration_formatted
+
+
 def find_control_by_key(page, key_name):
     """
     Busca recursivamente um controle com a key especificada na página.

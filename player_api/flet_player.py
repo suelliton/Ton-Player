@@ -1,13 +1,6 @@
-from player import Player
+from player_api.player import Player, PlayerState
 from typing import Callable, Optional, List
-from enum import Enum
 import flet as ft
-
-class PlayerState(Enum):
-    PLAYING = "playing"
-    PAUSED = "paused"
-    STOPPED = "stopped"
-    COMPLETED = "completed"
 
 class FletPlayer(Player):
     @property
@@ -54,14 +47,16 @@ class FletPlayer(Player):
 
     def __init__(
             self, 
+            page: ft.Page,  #required,
             src: Optional[str] = None, 
-            page: Optional[ft.Page] = None,
+            autoplay: Optional[bool] = False, 
+            volume: Optional[float] = 0.33,
             on_load: Optional[Callable[[], None]] = None,
             on_play: Optional[Callable[[], None]] = None,            
             on_completed: Optional[Callable[[], None]] = None,            
             on_stopped: Optional[Callable[[], None]] = None,            
             on_paused: Optional[Callable[[], None]] = None,      
-            on_release: Optional[Callable[[], None]] = None,               
+            on_resume: Optional[Callable[[], None]] = None,               
             on_position_changed: Optional[Callable[[], None]] = None,            
             on_duration_changed: Optional[Callable[[], None]] = None,            
             on_state_changed: Optional[Callable[[], None]] = None,            
@@ -72,148 +67,114 @@ class FletPlayer(Player):
             on_completed=on_completed,
             on_stopped=on_stopped,
             on_paused=on_paused,
-            on_release=on_release
+            on_resume=on_resume,
+            on_state_changed = on_state_changed
             )
         self._state = PlayerState.STOPPED
         self._src = src
+        self._autoplay = autoplay
         self._page = page
         self._audio = None
         self._duration = 0
-        self._volume = 0.33
+        self._volume = volume 
         self._muted = False     
         self._on_position_changed_func = on_position_changed
         self._on_duration_changed_func = on_duration_changed
-        self._on_state_changed_func = on_state_changed
-        self._observers: List[Callable[[PlayerState], None]] = []  # Callbacks list
-
-        
-        if self._on_state_changed_func:
-            self.add_observer(self._on_state_changed_func)
     
-    def initialize(self):
-        self._audio = ft.Audio(
-                                src='/musics/Silent_short.mp3', 
-                                autoplay=False, 
-                        )
+    def initialize(self)-> None:
+        self._audio = ft.Audio(src=self._src, autoplay=self._autoplay)
         self._page.overlay.append(self._audio)
         self._page.update()
         self._audio.on_loaded = lambda e: self._audio.play()        
-        self._audio.on_state_changed = lambda e: self.on_audio_state_changed(e)    
-        self._audio.on_position_changed = lambda e: self._on_position_changed(e) 
-        self._audio.on_duration_changed = lambda e: self._on_duration_changed(e)
+        
+        if self._on_state_changed_func:
+            self._audio.on_state_changed = lambda e: self.on_audio_state_changed(e)   
+        if self._on_position_changed_func: 
+            self._audio.on_position_changed = lambda e: self._on_position_changed(e) 
+        if self._on_duration_changed_func:
+            self._audio.on_duration_changed = lambda e: self._on_duration_changed(e)
         self.set_volume(self._volume)
         self._audio.update()       
     
-    def on_audio_state_changed(self, e):   
-        # print('AUDIO STATE', e.data)
-        if e.data == "completed":
+    def on_audio_state_changed(self, e)-> None:   
+        if e.data == "completed":#another values for this states can be: paused, playing
             self._on_completed()
-            self.state = PlayerState.STOPPED
-        # elif e.data == "paused":
-        #     self._on_paused()
-        #     self.state = PlayerState.PAUSED
-        # elif e.data == "playing":
-        #     self._on_play()
-        #     self.state = PlayerState.PLAYING
-         
-    def add_observer(self, observer: Callable[[PlayerState], None]):
-        """Add a new observer."""
-        self._observers.append(observer)
-
-    def remove_observer(self, observer: Callable[[PlayerState], None]):
-        """Remove a observer."""
-        self._observers.remove(observer)
-
-    def _notify_observers(self):
-        """Notify all observers about chandes in state."""
-        for observer in self._observers:
-            observer(self._state)
+            self.state = PlayerState.STOPPED    
         
-    def _on_position_changed(self, e):
+    def _on_position_changed(self, e)-> None:
         self._on_position_changed_func(int(e.data)) 
     
-    def _on_duration_changed(self, e):
+    def _on_duration_changed(self, e)-> None:
         self._duration = int(e.data)
         if self._on_duration_changed_func:
             self._on_duration_changed_func(self._duration)
     
-    def _set_duration(self):
+    def _set_duration(self)-> None:
+        "No implemented"
         ...
     
-    def load(self, src):       
+    def load(self, src)-> None:       
         self._src = src
         self._audio.src = self._src
         self._audio.update()
         self._on_load()   
     
-    def load_and_play(self, src):
-        print('Load and play music')
-        if self.state in [PlayerState.PLAYING, PlayerState.PAUSED]:
-            print('Stopping current music')
+    def load_and_play(self, src)-> None:       
+        if self.state in [PlayerState.PLAYING, PlayerState.PAUSED]:           
             self.stop()
         self.load(src)
         self.play()
     
-    def is_playing(self):
-        return self._audio.is_playing()
+    def is_playing(self)-> bool:
+        return self.state == PlayerState.STOPPED
     
-    def is_muted(self):
+    def is_muted(self)-> bool:
         return self._muted   
     
-    def _task_play(self):
+    def _task_play(self)->None:
         self._audio.play()
     
-    def play(self):      
-        print('Play music')
+    def play(self)-> None:#this method should not be called diretc, only for load_and_play method 
         # thread = Thread(target=self.task_play)
         # thread.start()                
-        if self.state == PlayerState.PLAYING:
-            print('Music was in execution')
+        if self.state == PlayerState.PLAYING:            
             return            
         self.state = PlayerState.PLAYING
         self._on_play() 
         self._task_play()    
     
-    def stop(self):
-        print('Stopped music')
+    def stop(self)-> None:        
         self._audio.pause()
         self.seek(0)
         self.state = PlayerState.STOPPED
         self._on_stopped()
     
-    def pause_release(self):
-        if self.state == PlayerState.STOPPED:
-            print('Player is stopped')
+    def pause_resume(self)-> None:
+        if self.state == PlayerState.STOPPED:           
             return
-        if self.state == PlayerState.PLAYING:
-            print('Paused music')
+        if self.state == PlayerState.PLAYING:            
             self._audio.pause()
             self.state = PlayerState.PAUSED
             self._on_paused()
-        else:
-            print('Release music')
+        else:            
             self._audio.resume()     
             self.state = PlayerState.PLAYING     
-            self._on_release()
+            self._on_resume()
             self._on_play()
     
-    def seek(self, position):
-        print('position seek', position)
+    def seek(self, position)-> None:       
         self._audio.seek(int(position))
     
-    def set_volume(self, value):
+    def set_volume(self, value)-> None:
         self._volume = value
         self._audio.volume = self.volume     
         self._audio.update()    
     
-    def mute_unmute(self):        
+    def mute_unmute(self)-> None:        
         self._muted = not self._muted
         if self._muted:
             self.set_volume(0.0)
         else:
             self.set_volume(self._volume)
-
-        
-        
 
     

@@ -20,13 +20,12 @@
 #10.3- incluir as actions(...) com popupmenu na lista da musica para remover etc
 #11 -[download_view] adicionar container colapse abaixo do elemento do album para mostrar nomes das faixas quando clicado em um botão 
 #10.4- investigar bug na atualização dos segundos da musica e da progressbar e da imagem que gira
+#10.6 - criar interface e classe concreta de player de áudio com vlc, implementar funções fora do app e depois incluir 
 
-#10.6 - criar interface e classe de tocar áudio com pydub, implementar funções fora do app e depois incluir 
+# 10.7 Usar primeiramente a nova classe FletPlayer e depois migrar para VlcPlayer, analisar o funcinamento e melhorias de bugs
+
 #10.5 - investigar bug quando atualiza o self.player, modifica a lista de músicas como se atualizasse em background
-
 #11.1 - adicionar função de notificação em utils para ser usada com mais facilidade
-
-
 #12 - adicionar snackbar de notificações quando iniciar e quando terminar de baixar um album
 #12.1- adicionar notificações 
 #13 - organizar em pastas os componentes, criar pasta views
@@ -51,3 +50,4 @@
 #2- Resolver pequeno bug, quando uma música tá pausada e clica-se em outra, a que estava tocando começa a tocar em vez da que foi clicada, sendo necessário um segundo clique
 #3- fazer uma geral nos arquivos, comentar o que for necessário, Incluir try catch onde necessita e informar o usuário quando houver um erro via notificação 
 #4- resolver bug quando clica em adicionar música na playlist manualmente e não seleciona nenhuma, listen_view.py", line 67, in add_playlist_coverart
+#5- adicionar tipagem em todos os parametros e retornos de todas as funções do ton player e do vlc_player e flet_player e da classe mãe player

@@ -1,5 +1,8 @@
 import flet as ft
 from enum import Enum
+from player_api.flet_player import FletPlayer
+from player_api.vlc_player import VlcPlayer
+from utils import transform_millisseconds_to_mm_ss
 
 class PlayerState(Enum):
     PLAYING = "playing"
@@ -33,34 +36,35 @@ class PlayerView():
             self.app = app          
             self.build()
     
-    def play_music(self, music=None):
-        # self.selected_music = music
-        # self.app.listen_view.update_list_musics_ui()   
-        # return 
+    def play_music(self, music=None):       
         if self.state == PlayerState.STOPPED:
             if not music:
                 if not self.selected_music:
                     self.selected_music = self.app.listen_view.list_musics[0]
-                    self.player.src = self.selected_music.path
+                    # self.player.src = self.selected_music.path
+                    self.player.load_and_play(self.selected_music.path)
                     # self.player.play()                
                 else:
                     if self.state == PlayerState.STOPPED:
                         # self.player.src = self.selected_music.path
-                        self.player.resume()                    
+                        self.player.pause_resume()                    
             else:
                 self.selected_music = music
-                self.player.src = self.selected_music.path
+                # self.player.src = self.selected_music.path
+                self.player.load_and_play(self.selected_music.path)
         elif self.state == PlayerState.PAUSED:
-            self.player.resume()
+            # self.player.resume()
+            self.player.pause_resume()
         elif self.state == PlayerState.PLAYING:
             if music:
                 self.selected_music = music
-                self.player.src = self.selected_music.path
+                # self.player.src = self.selected_music.path
+                self.player.load_and_play(self.selected_music.path)
             
-        self.player.update()
+        # self.player.update()
         self.state = PlayerState.PLAYING
         if self.selected_music:
-            print(self.state.value, self.selected_music.title)
+            print("Selected music ",self.state.value, self.selected_music.title)
         else:
             print('No selected music')
 
@@ -84,14 +88,11 @@ class PlayerView():
 
     
     def pause_music(self):
+        self.player.pause_resume()
         if self.state == PlayerState.PAUSED:
-            self.player.resume()
             self.state = PlayerState.PLAYING
         elif self.state == PlayerState.PLAYING:
-            self.player.pause()
-            self.state = PlayerState.PAUSED
-        self.player.update()
-
+            self.state = PlayerState.PAUSED    
         self.update_btns()
     
     def play_pause_music(self):
@@ -201,8 +202,8 @@ class PlayerView():
     
     def set_volume(self, e):            
         self.volume = float(e.control.value/100)
-        self.player.volume = self.volume     
-        self.player.update()
+        self.player.set_volume(self.volume)     
+        # self.player.update()
 
         self.muted = False
         self.mute_unmute_btn.icon = ft.icons.VOLUME_MUTE
@@ -243,12 +244,13 @@ class PlayerView():
     #     self.duration_indicator_ui.update()
     #     self.rotate_coverart_selected_music()
     
-    def update_progress_bar_ui(self, e):
+    def update_progress_bar_ui(self, position_millisseconds):
+        print('Update progressbar ', position_millisseconds)
         if self.app.selected_tab != 'tab_listen':
             return         
         # print('page controls',self.app.page.get_control('stack'))
         # print('Update progressbar',f'playing duration: {self.playing_duration}')
-        position = int(e.data)
+        position = position_millisseconds
         # if self.playing_duration > 0:  # Evita divisão por zero
         #     percent_position = ((position * 100) / self.playing_duration)/100
         #     # self.progress_bar_ui.max = self.playing_duration
@@ -263,10 +265,12 @@ class PlayerView():
         self.progress_bar_ui.update()
         self.duration_indicator_ui.value = self.format_duration(position)
         self.duration_indicator_ui.update()
-        self.rotate_coverart_selected_music()
+        if self.state == PlayerState.PLAYING:
+            self.rotate_coverart_selected_music()
 
-    def update_playing_duration(self, e):
-        self.playing_duration = int(e.data)  
+    def update_playing_duration(self, duration_millisseconds):        
+        # duration_formated = transform_millisseconds_to_mm_ss(duration_millisseconds)
+        self.playing_duration = duration_millisseconds  
         print(f'update_playing_duration playing duration: {self.playing_duration} ')
         # if self.playing_duration > self.progress_bar_ui.max: #atualiza o valor máximo para a progressbar 
         try:
@@ -275,8 +279,7 @@ class PlayerView():
             self.progress_bar_ui.update()
         except Exception as e:
             print(f'Erro ao atualizar playing duration: {e}')    
-    # def update_playing_duration(self, e):
-    #     self.playing_duration = int(e.data)  
+  
     
     def rotate_coverart_selected_music(self ):
         self.coverart_selected_music.rotate = ft.Rotate(angle=self.coverart_selected_music.rotate.angle + 33, alignment=ft.alignment.center)
@@ -284,27 +287,35 @@ class PlayerView():
     
     def seek_music(self, e):
         print(f'Seeking music to {int(e.control.value)}')
-        self.player.seek(int(e.control.value))
-        self.player.update()
+        self.player.seek(int(e.control.value))        
         self.progress_bar_ui.value = e.control.value
         self.progress_bar_ui.update()
 
-
     def build(self):        
-        self.player = ft.Audio(   
-            src='Silent_short.mp3',
-            autoplay= False,
-            volume=0.33,
-            balance=0,
-            on_loaded=lambda _: self.player.play(),
-            on_duration_changed=lambda e: self.update_playing_duration(e),
-            on_position_changed=lambda e: self.update_progress_bar_ui(e),
-            on_state_changed=lambda e:  self.state_player_changed(e),
-            # on_seek_complete=lambda _: self.next_music(),      
+        self.player = VlcPlayer(              
+            src='./assets/Silent_short.mp3',
+            autoplay= False,    
+            use_thread=True,                 
+            volume = 0.33,
+            on_duration_changed=self.update_playing_duration,
+            on_position_changed=self.update_progress_bar_ui,
+            # on_state_changed=lambda e:  self.state_player_changed(e),
+            on_completed=self.next_music,      
         )
+        # self.player = FletPlayer(   
+        #     page=self.app.page,
+        #     src='Silent_short.mp3',
+        #     autoplay= False,                     
+        #     volume = 0.33,
+        #     on_duration_changed=self.update_playing_duration,
+        #     on_position_changed=self.update_progress_bar_ui,
+        #     # on_state_changed=lambda e:  self.state_player_changed(e),
+        #     # on_seek_complete=lambda _: self.next_music(),      
+        # )
+        self.player.initialize()
         
 
-        self.app.page.overlay.append(self.player)     
+        # self.app.page.overlay.append(self.player)     
 
        
         # self.progress_bar_ui = \

@@ -1,5 +1,12 @@
 from abc import ABC, abstractmethod
-from typing import Callable, Optional
+from typing import Callable, Optional, List
+from enum import Enum
+
+class PlayerState(Enum):#this enum class control the internal state of player
+    PLAYING = "playing"
+    PAUSED = "paused"
+    STOPPED = "stopped"
+    COMPLETED = "completed"
 
 class Player(ABC):
     def __init__(
@@ -9,15 +16,34 @@ class Player(ABC):
             on_completed: Optional[Callable[[], None]] = None,            
             on_stopped: Optional[Callable[[], None]] = None,            
             on_paused: Optional[Callable[[], None]] = None,   
-            on_release: Optional[Callable[[], None]] = None,   
+            on_resume: Optional[Callable[[], None]] = None,   
+            on_state_changed: Optional[Callable[[], None]] = None,   
             )-> None:
         self._on_load_func = on_load
         self._on_play_func = on_play
         self._on_completed_func = on_completed
         self._on_stopped_func = on_stopped
         self._on_paused_func = on_paused
-        self._on_release_func = on_release
-        # super().__init__()
+        self._on_resume_func = on_resume
+        self._on_state_changed_func = on_state_changed
+
+        self._observers: List[Callable[[PlayerState], None]] = []  # Callbacks list
+        
+        if self._on_state_changed_func:
+            self.add_observer(self._on_state_changed_func)
+        
+    def add_observer(self, observer: Callable[[PlayerState], None])-> None:
+        """Add a new observer."""
+        self._observers.append(observer)
+
+    def remove_observer(self, observer: Callable[[PlayerState], None])-> None:
+        """Remove a observer."""
+        self._observers.remove(observer)
+
+    def _notify_observers(self)-> None:
+        """Notify all observers about chandes in state."""
+        for observer in self._observers:
+            observer(self._state)
 
     def _on_load(self)-> None:
         print('Loaded music')
@@ -30,7 +56,7 @@ class Player(ABC):
             self._on_play_func()
     
     def _on_completed(self)-> None:
-        print('Completed music execution')
+        print('Completed music')
         if self._on_completed_func:
             self._on_completed_func()
 
@@ -44,11 +70,16 @@ class Player(ABC):
         if self._on_paused_func:
             self._on_paused_func()
     
-    def _on_release(self)-> None:
-        print('Release music')
-        if self._on_release_func:
-            self._on_release_func()
-   
+    def _on_resume(self)-> None:
+        print('Resume music')
+        if self._on_resume_func:
+            self._on_resume_func()    
+
+    @abstractmethod
+    def initialize(self)-> None:
+        "Abstract method to start the class behavior"
+        ...
+
     @abstractmethod
     def _on_position_changed(self)-> None:
         "Abstract method trigged when pass the seconds music"
@@ -100,7 +131,7 @@ class Player(ABC):
         ...
 
     @abstractmethod
-    def pause_release(self)-> None:
+    def pause_resume(self)-> None:
         "Abstract method called to pause or release the execution music"
         ...
 
