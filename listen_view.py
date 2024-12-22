@@ -231,7 +231,7 @@ class ListenView():
                         controls=[         
                             ft.Container(
                                 padding=ft.padding.only(left=5, right=15),
-                                content=ft.Text(value=f'{i}', color=ft.colors.WHITE, text_align='left')
+                                content=ft.Text(value=f'{i+1}', color=ft.colors.WHITE, text_align='left')
                             ),                                              
                             ft.Container(
                                 expand=True,                                

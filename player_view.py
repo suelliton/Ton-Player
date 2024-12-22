@@ -282,7 +282,7 @@ class PlayerView():
   
     
     def rotate_coverart_selected_music(self ):
-        self.coverart_selected_music.rotate = ft.Rotate(angle=self.coverart_selected_music.rotate.angle + 33, alignment=ft.alignment.center)
+        self.coverart_selected_music.rotate = ft.Rotate(angle=self.coverart_selected_music.rotate.angle + 12, alignment=ft.alignment.center)
         self.coverart_selected_music.update()
     
     def seek_music(self, e):

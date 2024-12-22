@@ -1,4 +1,5 @@
 from player_api.player import Player, PlayerState
+# from player import Player, PlayerState
 import vlc 
 import time
 from threading import Thread
@@ -106,12 +107,11 @@ class VlcPlayer(Player):
     
     def load(self, src)-> None:       
         self._src = src    
-        if not self._audio:
-            print('======= Instanciando novo _audio')
-            self._audio = vlc.MediaPlayer(self._src)
-        else:
-            print('======= Usando _audio já existente')
+        if not self._audio:            
+            self._audio = vlc.MediaPlayer(self._src)           
+        else:         
             self._audio.set_media(vlc.Media(self._src))
+            
         
         self._on_load()   
     
@@ -120,8 +120,8 @@ class VlcPlayer(Player):
         if self.state in [PlayerState.PLAYING, PlayerState.PAUSED]:
             print('Stopping current music')
             self.stop()
-        
         self._music_changed = True
+        
         self.load(src)
         self.play()
     
@@ -134,35 +134,42 @@ class VlcPlayer(Player):
     def _task_play(self)-> None:
         self._audio.play()
         self._on_position_changed()
-        time.sleep(0.2)
+        time.sleep(1)
         self._set_duration()
-        while self._audio.is_playing() or self.state == PlayerState.PAUSED and not self._music_changed:
+        #set this flag to false for don't out of while
+        self._music_changed = False
+       
+        while self._audio.is_playing() or self.state== PlayerState.PAUSED:
             self._on_position_changed()
-            print('is playing', self._audio.is_playing())
-            time.sleep(0.9)
-        print('EXIT of while')
+            if self._music_changed:#this var is changed in load_and_play method to load a new music
+                break#breaks the while to kill the thread         
+            time.sleep(0.9)    
 
-        if self._music_changed:
-            self._music_changed = False
-        else:
-            self.state = PlayerState.STOPPED        
+        if self._music_changed:#if loaded a new music, set to false
+            self._music_changed = False 
+        else:#if out the while in final of music, change to stopped state and  call _on_complete callback
+            # self.state = PlayerState.STOPPED   
+            self.stop()
             self._on_completed()
+   
 
     def play(self)-> None:                       
         if self.state == PlayerState.PLAYING:            
             return      
       
-        self.state = PlayerState.PLAYING
-        self._on_play() 
-
         if self._use_thread:
             if self._thread:
-                while self._music_changed:
-                    print('Aguardando sair do loop')
+                if self.state == PlayerState.PLAYING:
+                    while self._music_changed:
+                        print('Aguardando sair do loop')
+
             self._thread = Thread(target=self._task_play)
             self._thread.start()           
         else:  
             self._task_play()
+        
+        self.state = PlayerState.PLAYING
+        self._on_play() 
     
     
     def stop(self)-> None:      
