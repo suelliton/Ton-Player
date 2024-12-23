@@ -21,15 +21,19 @@
 #11 -[download_view] adicionar container colapse abaixo do elemento do album para mostrar nomes das faixas quando clicado em um botão 
 #10.4- investigar bug na atualização dos segundos da musica e da progressbar e da imagem que gira
 #10.6 - criar interface e classe concreta de player de áudio com vlc, implementar funções fora do app e depois incluir 
-
-# 10.7 Usar primeiramente a nova classe FletPlayer e depois migrar para VlcPlayer, analisar o funcinamento e melhorias de bugs
-
+#10.7 Usar primeiramente a nova classe FletPlayer e depois migrar para VlcPlayer, analisar o funcinamento e melhorias de bugs
 #10.5 - investigar bug quando atualiza o self.player, modifica a lista de músicas como se atualizasse em background
-#11.1 - adicionar função de notificação em utils para ser usada com mais facilidade
+
+# 11.1 - adicionar função de notificação em commons.py para ser usada com mais facilidade
+
 #12 - adicionar snackbar de notificações quando iniciar e quando terminar de baixar um album
 #12.1- adicionar notificações 
+#12.2- Investigar porque as vezes o nome do album fica o nome do artista quando baixa os metadados via shazam
 #13 - organizar em pastas os componentes, criar pasta views
+#14.1 - mudar classes para herdar as classes do flet diretamente, sem gambiarras, para melhorar a leitura
+#14.2 - separar melhor os componentes a fim de diminuir códigos em um arquivo só
 #14 - ao mudar de tab os elementos que são atualizados enquanto toca o audio não são encontrados pois eles são apagados da view, verificar possibilidade de apenas trocar eles de posição no array de controls da stack_main
+#14.3 - colocar round_border na barra de tabs inferior
 #15 - inluir nome do artista e album na pasta coverart para evitar conflitos de músicas com mesmo nome
 #16 - adicionar campo de texto para indicar a quantidade de faixas num album na listagem para download
 #17 - adicionar artista ao model playlist/album

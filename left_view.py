@@ -3,6 +3,7 @@ from models import Playlist, Music
 import asyncio
 from threading import Thread
 import time
+from commons import show_notification
 
 class LeftView():
     _instance = None
@@ -44,26 +45,14 @@ class LeftView():
         self.save_new_playlist_background()
 
     def show_notification_adding_playlist(self, name):
-        """Exibe uma notificação indicando que a playlist está sendo adicionada."""
-        snack = ft.SnackBar(
-            duration=3000,
-            content=ft.Text(f'Adding playlist... {name}')
-        )
-        self.app.page.overlay.append(snack)
-        snack.open = True
-        self.app.page.update()
+        message = f'Adding playlist... {name}'
+        show_notification(self.app, message)
+        
     
     def show_notification_remove_playlist(self, playlist):
-        snack = ft.SnackBar(
-            duration=3000,
-            content=ft.Text(f'Removing playlist... {playlist.name}')
-        )
-        # self.app.page.overlay.append(snack)
-        self.app.page.add(snack)
-        # snack.open = True
-        # self.app.page.update()
-        self.app.page.open(snack)       
-        
+        message = f'Removing playlist... {playlist.name}'
+        show_notification(self.app, message)
+      
 
     def save_new_playlist_background(self):
         """Executa o salvamento da playlist em segundo plano."""
@@ -90,8 +79,8 @@ class LeftView():
             Playlist.create(name=name.strip())
             # Atualiza a interface após o término
             self.update_playlists_ui()
-            self.app.page.add(ft.Text(f"Playlist '{name.strip()}' criada com sucesso!"))
-            self.app.page.update()
+            # self.app.page.add(ft.Text(f"Playlist '{name.strip()}' criada com sucesso!"))
+            # self.app.page.update()
 
         self.app.page.run_thread(background_task)
 

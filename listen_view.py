@@ -11,6 +11,7 @@ import time
 import metadata.shazam as shazam
 import metadata.mutagen_mp3 as mutagen_mp3
 from utils import sanitize_metadata, get_audio_duration
+from commons import show_notification
 
 class ListenView():
     _instance = None
@@ -42,26 +43,15 @@ class ListenView():
         self.playlist_title_ui.update()
 
     def load_music(self,file_picker):
-        file_picker.pick_files(allow_multiple=True)
-   
+        file_picker.pick_files(allow_multiple=True)   
     
     def show_notification_remove_music(self, music):
-        snack = ft.SnackBar(
-            duration=3000,
-            content=ft.Text(f'Removing music... {music.title}')
-        )
-        self.app.page.overlay.append(snack)
-        snack.open = True
-        self.app.page.update()
+        message = f'Removing music... {music.title}'
+        show_notification(self.app, message)    
 
     def show_notification_adding_music(self):
-        snack = ft.SnackBar(
-            duration=3000,
-            content=ft.Text('Adding musics...')
-        )
-        self.app.page.overlay.append(snack)
-        snack.open = True
-        self.app.page.update()
+        message = 'Adding musics...'
+        show_notification(self.app, message)      
 
     def add_playlist_coverart(self, playlist, files):
         if len(files) >=1:
