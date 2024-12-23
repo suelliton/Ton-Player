@@ -1,10 +1,8 @@
 import flet as ft
-
-from models import Playlist, Music, create_db_and_tables
-import time
-from left_view import LeftView 
-from listen_view import ListenView
-from download_view import DownloadView
+from models import Playlist, create_db_and_tables
+from views.left_view import LeftView 
+from views.listen_view import ListenView
+from views.download_view import DownloadView
 
 class App:
     _instance = None  #Unique class instance 

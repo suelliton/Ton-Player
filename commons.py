@@ -5,8 +5,6 @@ class NotificationType(Enum):
     INFO = "info"
     SUCCESS = "success"
     ERROR = "error"
-  
-
 
 def show_notification(app: any, message: str, duration: int = 5000, type: str = NotificationType.INFO)-> None:
     bgcolor = None

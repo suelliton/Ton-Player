@@ -1,12 +1,8 @@
 import flet as ft
 from models import Music
-from player_view import PlayerView
-from left_view import LeftView
-from download_view import DownloadView
-from search_view import SearchView
-from mutagen.mp3 import MP3
-from mutagen.wave import WAVE
-from mutagen.id3 import ID3, APIC
+from views.player_view import PlayerView
+from views.left_view import LeftView
+from views.search_view import SearchView
 import time
 import metadata.shazam as shazam
 import metadata.mutagen_mp3 as mutagen_mp3

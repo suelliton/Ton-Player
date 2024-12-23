@@ -26,12 +26,12 @@
 #11.1 - adicionar função de notificação em commons.py para ser usada com mais facilidade
 #12 - adicionar snackbar de notificações quando iniciar e quando terminar de baixar um album
 #12.1- adicionar notificações quando atualizar metadados, quando salvar metadados
+#12.2- Investigar porque as vezes o nome do album fica o nome do artista quando baixa os metadados via shazam
 
 
-# 12.2- Investigar porque as vezes o nome do album fica o nome do artista quando baixa os metadados via shazam
+# 13 - organizar em pastas os componentes, criar pasta views
 
 
-#13 - organizar em pastas os componentes, criar pasta views
 #14.1 - mudar classes para herdar as classes do flet diretamente, sem gambiarras, para melhorar a leitura
 #14.2 - separar melhor os componentes a fim de diminuir códigos em um arquivo só
 #14 - ao mudar de tab os elementos que são atualizados enquanto toca o audio não são encontrados pois eles são apagados da view, verificar possibilidade de apenas trocar eles de posição no array de controls da stack_main

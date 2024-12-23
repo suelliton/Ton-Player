@@ -1,14 +1,10 @@
 import flet as ft
 from enum import Enum
+from player_api.player import PlayerState
 from player_api.flet_player import FletPlayer
 from player_api.vlc_player import VlcPlayer
-from utils import transform_millisseconds_to_mm_ss
+# from utils import transform_millisseconds_to_mm_ss
 
-class PlayerState(Enum):
-    PLAYING = "playing"
-    PAUSED = "paused"
-    STOPPED = "stopped"
-    COMPLETED = "completed"
 
 class PlayerView():
     _instance = None
@@ -278,11 +274,14 @@ class PlayerView():
             self.progress_bar_ui.divisions = self.playing_duration/1000
             self.progress_bar_ui.update()
         except Exception as e:
-            print(f'Erro ao atualizar playing duration: {e}')    
-  
+            print(f'Erro ao atualizar playing duration: {e}')      
     
-    def rotate_coverart_selected_music(self ):
-        self.coverart_selected_music.rotate = ft.Rotate(angle=self.coverart_selected_music.rotate.angle + 12, alignment=ft.alignment.center)
+    def rotate_coverart_selected_music(self ):      
+        self.coverart_selected_music.rotate = \
+        ft.Rotate(
+                angle=(self.coverart_selected_music.rotate.angle+0.33)%360,
+                alignment=ft.alignment.center
+        )
         self.coverart_selected_music.update()
     
     def seek_music(self, e):
