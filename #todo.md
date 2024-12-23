@@ -23,10 +23,12 @@
 #10.6 - criar interface e classe concreta de player de áudio com vlc, implementar funções fora do app e depois incluir 
 #10.7 Usar primeiramente a nova classe FletPlayer e depois migrar para VlcPlayer, analisar o funcinamento e melhorias de bugs
 #10.5 - investigar bug quando atualiza o self.player, modifica a lista de músicas como se atualizasse em background
+#11.1 - adicionar função de notificação em commons.py para ser usada com mais facilidade
 
-# 11.1 - adicionar função de notificação em commons.py para ser usada com mais facilidade
 
-#12 - adicionar snackbar de notificações quando iniciar e quando terminar de baixar um album
+# 12 - adicionar snackbar de notificações quando iniciar e quando terminar de baixar um album
+
+
 #12.1- adicionar notificações 
 #12.2- Investigar porque as vezes o nome do album fica o nome do artista quando baixa os metadados via shazam
 #13 - organizar em pastas os componentes, criar pasta views

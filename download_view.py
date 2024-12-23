@@ -7,6 +7,7 @@ from models import Playlist, Music
 import metadata.mutagen_mp3 as mutagen_mp3
 from utils import sanitize_metadata, get_audio_duration
 import time
+from commons import show_notification, NotificationType
 # Configuração do Spotify API
 spotify = Spotify(auth_manager=SpotifyClientCredentials(
     client_id="2ec55646db0248a6b36927d60e0be092",
@@ -73,6 +74,7 @@ class DownloadView():
             print(f'Erro na atualização da lista de musicas: {e}')
 
     def download_album(self, artist_name, album_name, coverart_album_url, download_url):
+        show_notification(self.app, f"Starting download of album: {album_name}...")
         try:
             # Caminho para a pasta "Downloads" dentro do diretório atual
             downloads_dir = os.path.join(os.getcwd(), "downloads")
@@ -95,6 +97,7 @@ class DownloadView():
             subprocess.run(command, cwd=album_dir, check=True)
             self.create_playlist(artist_name, album_name, coverart_album_url, album_dir)
             print(f"Download do álbum '{album_name}' concluído com sucesso!")
+            show_notification(self.app, f"{album_name} downloaded successfully!", type=NotificationType.SUCCESS)
         
         except subprocess.CalledProcessError as e:
             print(f"Erro ao executar o comando: {e}")
