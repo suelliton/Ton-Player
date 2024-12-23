@@ -97,7 +97,16 @@ class ListenView():
             except Exception as e:
                 print(f"Error while remove music: {e}")        
             self.update_list_musics_ui()
-        self.app.page.run_thread(background_task)       
+        self.app.page.run_thread(background_task)    
+
+    def update_metadata_playlist(self, e):   
+        show_notification(self.app, "Updating all musics metadata")
+        shazam.update_metadata_playlist( self.app, self.app.left_view.selected_playlist)
+    
+    def save_metadata_playlist_for_mp3_files(self, e):
+        show_notification(self.app, "Saving all metadatas for mp3 files")
+        # mutagen_mp3.task_update_mp3_files_playlist(self.app.left_view.selected_playlist)
+        mutagen_mp3.update_mp3_files_playlist(self.app.left_view.selected_playlist)
 
     def update_list_musics_ui(self):   
         print('Update_list_musics_ui')
@@ -342,7 +351,7 @@ class ListenView():
                                         icon_color=ft.colors.WHITE,
                                         icon_size=25,
                                         tooltip='Update metadata all tracks',
-                                        on_click= lambda e: shazam.update_metadata_playlist(self.app.left_view.selected_playlist, self.app)
+                                        on_click= lambda e: self.update_metadata_playlist(e)
                                         )
         self.save_mp3_metadata_btn = ft.IconButton(
                                         alignment=ft.alignment.center,
@@ -350,7 +359,7 @@ class ListenView():
                                         icon_color=ft.colors.WHITE,
                                         icon_size=25,
                                         tooltip='Save metadata to mp3 files',
-                                        on_click= lambda e: mutagen_mp3.task_update_mp3_files_playlist(self.app.left_view.selected_playlist)
+                                        on_click= lambda e: self.save_metadata_playlist_for_mp3_files(e)
                                         )
         
 

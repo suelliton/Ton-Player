@@ -122,7 +122,7 @@ def task_update_metadata_playlist(playlist, app):
             add_playlist_coverart(playlist, music.coverart, app)
         print(music.title)
 
-def update_metadata_playlist(playlist, app):
+def update_metadata_playlist(app, playlist):
     print(f'Updating metadata of playlist {playlist.name}')
     thread = Thread(target=task_update_metadata_playlist, args=(playlist,app,))
     thread.start()
