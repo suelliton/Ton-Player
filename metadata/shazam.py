@@ -66,7 +66,7 @@ async def recognize_song(file_path):
     return song_metadata
 
 
-def update_metadata(music, app):
+def update_metadata_music(app, music):
     # Exemplo de uso
     file_path = music.path #'/media/sueliton/CCC0F10AC0F0FC10/Users/Bruno/Music/Korean mix/Crash Landing On You - IU OST - I Will Give You My Heart [ENG SUB]-ZKCFDExYUcs.mp3'
     metadata = asyncio.run(recognize_song(file_path))
@@ -76,7 +76,7 @@ def update_metadata(music, app):
 
     music.title = metadata['title'] if metadata['title'] else music.title 
     music.artist = metadata['artist'] if metadata['artist'] else 'Unknown' 
-    music.album = metadata['artist'] if metadata['artist'] else 'Unknown' 
+    music.album = metadata['album'] if metadata['album'] else 'Unknown' 
     music.genre = metadata['genre'] if metadata['genre'] else 'Unknown' 
     music.coverart = metadata['coverart'] if metadata['coverart'] else 'default-music.png'# music.coverart 
 
@@ -117,7 +117,7 @@ def task_update_metadata_playlist(playlist, app):
     print('Running thread')
     musics = Music.select().where(Music.playlist == playlist, Music.has_metadata == False)
     for i, music in enumerate(musics):
-        music = update_metadata(music, app)
+        music = update_metadata_music(app, music)
         if i == 0 and 'default-playlist' in playlist.coverart:
             add_playlist_coverart(playlist, music.coverart, app)
         print(music.title)

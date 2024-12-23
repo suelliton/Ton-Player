@@ -28,9 +28,9 @@
 #12.1- adicionar notificações quando atualizar metadados, quando salvar metadados
 
 
+# 12.2- Investigar porque as vezes o nome do album fica o nome do artista quando baixa os metadados via shazam
 
 
-#12.2- Investigar porque as vezes o nome do album fica o nome do artista quando baixa os metadados via shazam
 #13 - organizar em pastas os componentes, criar pasta views
 #14.1 - mudar classes para herdar as classes do flet diretamente, sem gambiarras, para melhorar a leitura
 #14.2 - separar melhor os componentes a fim de diminuir códigos em um arquivo só

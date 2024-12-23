@@ -98,6 +98,10 @@ class ListenView():
                 print(f"Error while remove music: {e}")        
             self.update_list_musics_ui()
         self.app.page.run_thread(background_task)    
+    
+    def update_metadata_music(self, music):
+        show_notification(self.app, f'Update metadata of {music.title}', duration=3000)
+        shazam.update_metadata_music(self.app, music)
 
     def update_metadata_playlist(self, e):   
         show_notification(self.app, "Updating all musics metadata")
@@ -288,7 +292,7 @@ class ListenView():
                                             tooltip='Actions',
                                             icon_size=20,       
                                             items=[
-                                                ft.PopupMenuItem(text="Get metadata", on_click=lambda e, m=music: shazam.update_metadata(m, self.app)),
+                                                ft.PopupMenuItem(text="Get metadata", on_click=lambda e, m=music: self.update_metadata_music(m)),
                                                 ft.PopupMenuItem(text="Remove", on_click=lambda e, m=music: self.remove_music(m)),
                                             ]
                                         )
