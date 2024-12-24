@@ -469,7 +469,7 @@ class PlayerView():
             ]
         )
 
-        self.content_ui = \
+        self.content = \
         ft.Container(
             content= ft.Column(
                 alignment=ft.CrossAxisAlignment.CENTER,

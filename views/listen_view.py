@@ -522,14 +522,14 @@ class ListenView():
                                                     self.add_music_btn
                                                 ]
                                         ),
-                                        self.player_view.content_ui
+                                        self.player_view.content
                                     ],
                             ),
                     ]
                     
                 )
             ),
-            self.search_view.content_ui,
+            self.search_view.content,
             ]
             ,alignment=ft.alignment.top_center
         )

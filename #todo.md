@@ -31,14 +31,14 @@
 #14.1 - mudar classes para herdar as classes do flet diretamente, sem gambiarras, para melhorar a leitura (É melhor deixar como está, fica mais flexível o fluxo de updates da aplicação)
 #14 - ao mudar de tab os elementos que são atualizados enquanto toca o audio não são encontrados pois eles são apagados da view, verificar possibilidade de apenas trocar eles de posição no array de controls da stack_main
 #14.3 - colocar round_border na barra de tabs inferior
+#14.4 - quando não houver músicas deve aparecer um ft.Text() avisando que não há músicas na playlist
 
+#16 - adicionar campo de texto para indicar a quantidade de faixas num album na listagem para download
 
-# 14.4 - quando não houver músicas deve aparecer um ft.Text() avisando que não há músicas na playlist
 
 
 #14.2 - separar melhor os componentes a fim de diminuir códigos em um arquivo só
 #15 - inluir nome do artista e album na pasta coverart para evitar conflitos de músicas com mesmo nome
-#16 - adicionar campo de texto para indicar a quantidade de faixas num album na listagem para download
 #17 - adicionar artista ao model playlist/album
 #18 - adicionar nome do album e embaixo o nome do artista na lista de playlist/album
 #19 - No drawer, analisar e retirar a rolagem do conteúdo todo, deixando apenas para a listview o scroll, deixando os outros elementos fixos

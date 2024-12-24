@@ -93,7 +93,7 @@ class SearchView():
                                 # on_blur=lambda e: self.loss_focus(e)
                                 )
         self.list_results_ui = ft.ListView(visible=False)
-        self.content_ui = \
+        self.content = \
         ft.Container(
             bgcolor=ft.colors.with_opacity(color='#34495e', opacity=1),
             width=400,

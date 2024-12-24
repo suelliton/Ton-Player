@@ -197,21 +197,25 @@ class DownloadView():
                         ft.Column(                                       
                             controls=[
                                 ft.Container(
-                                    content=ft.Image(src=result['images'][-1]['url'] if result['images'][-1]['url'] else "default-playlist.jpg", fit=ft.ImageFit.COVER)
+                                    content=ft.Image(src=result['images'][-1]['url'] if result['images'][-1]['url'] else "default-playlist.jpg", fit=ft.ImageFit.COVER, height=80)
                                 ),                        
                             ]
                         ),
                         ft.Column(                       
                             alignment=ft.CrossAxisAlignment.END,       
-                            width = 200, 
+                            width = 180, 
                             expand_loose=True,
                             controls=[                        
                                 ft.Container(
-                                    padding=ft.padding.only(left = 10),
+                                    padding=ft.padding.only(left = 5),
                                     content=ft.Text(value=result['name'],weight='bold',color=ft.colors.WHITE)
+                                ), 
+                                ft.Container(
+                                    padding=ft.padding.only(left = 5),
+                                    content=ft.Text(value=f'{result['total_tracks']} musics', color=ft.colors.WHITE, size=10)
                                 ),
                                 ft.Container(
-                                    padding=ft.padding.only(left = 10),
+                                    padding=ft.padding.only(left = 5),
                                     content=ft.Text(value=result['artists'][0]['name'],color=ft.colors.WHITE)
                                 ),       
                                 # ft.Container(key=f'container_{result['id']}',visible=True)     
@@ -225,14 +229,14 @@ class DownloadView():
                                     icon=ft.icons.DOWNLOAD,
                                     icon_color=ft.colors.WHITE,
                                     on_click=lambda e, r=result: self.download(e, r)
-                                ),
+                                ),                               
                                 ft.Container(                       
-                                    content= ft.IconButton(
-                                        key=f'icon_{result['id']}',
-                                        icon=ft.icons.KEYBOARD_ARROW_DOWN,
-                                        icon_color= ft.colors.WHITE,
-                                        on_click= lambda e, a=result : self.toggle_visibility_list_musics_album(e, a),
-                                    ),
+                                    content=ft.IconButton(
+                                                key=f'icon_{result['id']}',
+                                                icon=ft.icons.KEYBOARD_ARROW_DOWN,
+                                                icon_color= ft.colors.WHITE,
+                                                on_click= lambda e, a=result : self.toggle_visibility_list_musics_album(e, a),
+                                            )
                                 )
                             ]
                         )
@@ -265,7 +269,6 @@ class DownloadView():
 
             ]
         )
-
 
         self.content = \
         ft.Container(            
