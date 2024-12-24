@@ -7,9 +7,10 @@ import time
 import metadata.shazam as shazam
 import metadata.mutagen_mp3 as mutagen_mp3
 from utils import sanitize_metadata, get_audio_duration
-from commons import show_notification
+from views.commons import show_notification
 
 class ListenView():
+    
     _instance = None
     app = None
     content_ui = None
@@ -31,7 +32,7 @@ class ListenView():
     def __init__(self, app):
         if not hasattr(self, "_initialized"):
             print("Creating MainView")
-            self.app = app          
+            self.app = app 
             self.build()   
     
     def update_playlist_title(self, playlist):
@@ -113,6 +114,32 @@ class ListenView():
         self.list_musics = Music.select().where(Music.playlist==self.app.left_view.selected_playlist)
              
         self.list_musics_ui.controls.clear()
+
+        if len(self.list_musics) == 0:
+            self.list_musics_ui.controls=[
+                    ft.Container(
+                        content=ft.Column(
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                            controls=[
+                                ft.Text(
+                                    value='No musics yet',
+                                    text_align=ft.TextAlign.CENTER,
+                                    size=21,
+                                    color=ft.colors.WHITE,
+                                    weight=ft.FontWeight.BOLD,    
+                                ),
+                                ft.Text(
+                                    value='Click in +musics button to add musics',
+                                    text_align=ft.TextAlign.CENTER,
+                                    color=ft.colors.WHITE,
+                                    weight=ft.FontWeight.W_300    
+                                )
+                            ]
+                        )
+                    )
+            ]
+            self.list_musics_ui.update()
+            return
         # self.list_musics_ui.rows.clear()
         # self.list_musics_ui.rows = [
         #                 ft.DataRow(
@@ -424,7 +451,7 @@ class ListenView():
         
         self.player_view = PlayerView(self.app)
         
-        self.content_ui = \
+        self.content = \
         ft.Stack([
             
             ft.Container(
@@ -439,7 +466,7 @@ class ListenView():
                             ft.Column(
                                 col={'xs':0,'sm':0, 'md':4},                               
                                 controls=[
-                                    self.left_view.content_ui
+                                    self.left_view.content
                                 ]
                             ),
                             ft.Column(
@@ -506,6 +533,7 @@ class ListenView():
             ]
             ,alignment=ft.alignment.top_center
         )
+       
     
          
 

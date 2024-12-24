@@ -4,7 +4,7 @@ from views.left_view import LeftView
 from views.listen_view import ListenView
 from views.download_view import DownloadView
 
-class App:
+class App():
     _instance = None  #Unique class instance 
     page = None
     drawer_ui = None
@@ -35,25 +35,23 @@ class App:
         #Events
         self.page.on_resized = self.on_resize
 
-
     def on_resize(self, e):      
         if e.width < 768:
-            self.left_view.content_ui.visible = False
+            self.left_view.content.visible = False
             self.open_drawer_btn.visible = True           
             self.is_sm = True 
              #hide album column and duration from list_musics_ui header
             self.listen_view.header_list_musics_ui.controls[2].visible=False
             self.listen_view.header_list_musics_ui.controls[3].visible=False
         else:  
-            self.left_view.content_ui.visible = True           
+            self.left_view.content.visible = True           
             self.open_drawer_btn.visible = False
             self.is_sm = False
              #show album column and duration from list_musics_ui header
             self.listen_view.header_list_musics_ui.controls[2].visible=True
             self.listen_view.header_list_musics_ui.controls[3].visible=True
         
-        self.listen_view.update_list_musics_ui()
-       
+        self.listen_view.update_list_musics_ui()       
         
         self.listen_view.header_list_musics_ui.update()
         self.page.update()
@@ -94,7 +92,7 @@ class App:
         self.page.bgcolor = "#222f3e" #ft.colors.with_opacity(color=ft.colors.BLUE_400, opacity=0.3)
 
         self.left_view = LeftView(self)
-
+        
         self.drawer_ui = ft.NavigationDrawer(
             bgcolor= "#222f3e",
             shadow_color= ft.colors.with_opacity(color=ft.colors.BLUE_700, opacity=1),
@@ -179,7 +177,7 @@ class App:
                                 #     color=ft.colors.BLUE_500,
                                 #     size=25
                                 # ),
-                                self.listen_view.content_ui
+                                self.listen_view.content
                         ]
                     )
         )
@@ -200,7 +198,7 @@ class App:
                                 #     color=ft.colors.BLUE_500,
                                 #     size=25
                                 # ),
-                                self.download_view.content_ui
+                                self.download_view.content
                         ]
                     )
         )
@@ -210,15 +208,14 @@ class App:
         self.page.bottom_appbar = ft.BottomAppBar(
             bgcolor=ft.colors.BLACK12,
             height=60,
-            shape= ft.NotchShape.CIRCULAR,
+            # shape= ft.NotchShape.CIRCULAR,            
             content=ft.Row(
-                alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                controls=[
-                    ft.IconButton(icon=ft.icons.QUEUE_MUSIC,icon_color=ft.colors.WHITE, icon_size=28, on_click=lambda e : self.select_listen_view(e)),
-                    ft.IconButton(icon=ft.icons.DOWNLOAD,icon_color=ft.colors.WHITE, icon_size=28,on_click=lambda e : self.select_download_view(e)),
-
-                ]
-            )
+                        alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                        controls=[
+                                ft.IconButton(icon=ft.icons.QUEUE_MUSIC,icon_color=ft.colors.WHITE, icon_size=28, on_click=lambda e : self.select_listen_view(e)),
+                                ft.IconButton(icon=ft.icons.DOWNLOAD,icon_color=ft.colors.WHITE, icon_size=28,on_click=lambda e : self.select_download_view(e)),
+                            ]
+            )            
         )
         
         self.stack_main = \
@@ -240,6 +237,7 @@ class App:
         self.left_view.update_playlists_ui()
         self.listen_view.update_list_musics_ui()
         self.page.update()
+       
 
 
 

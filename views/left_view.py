@@ -3,7 +3,7 @@ from models import Playlist, Music
 import asyncio
 from threading import Thread
 import time
-from commons import show_notification
+from views.commons import show_notification
 
 class LeftView():
     _instance = None
@@ -244,31 +244,33 @@ class LeftView():
                         on_click=lambda e: self.open_new_playlist_dialog(e)
         )
 
-        self.content_ui = \
+        self.content = \
         ft.Column(
-    horizontal_alignment="center",
-    alignment=ft.MainAxisAlignment.CENTER,
-    controls=[
-        ft.Container(
-            padding=ft.padding.only(top=20, left=20, right=20),
-            height=580,
-            content=ft.Column(
-                controls=[
-                    ft.Text(
-                        value="Playlists",
-                        weight=ft.FontWeight.BOLD,
-                        color=ft.colors.WHITE,
-                        text_align=ft.TextAlign.CENTER
-                    ),
-                    self.playlists_ui,
-                    ft.Row(                        
-                        alignment=ft.MainAxisAlignment.CENTER,
-                        controls=[self.add_playlist_btn]
-                    ),
-                    ft.Divider(),
-                ]
-            )
+            horizontal_alignment="center",
+            alignment=ft.MainAxisAlignment.CENTER,
+            controls=[
+                ft.Container(
+                    padding=ft.padding.only(top=20, left=20, right=20),
+                    height=580,
+                    content=ft.Column(
+                        controls=[
+                            ft.Text(
+                                value="Playlists",
+                                weight=ft.FontWeight.BOLD,
+                                color=ft.colors.WHITE,
+                                text_align=ft.TextAlign.CENTER
+                            ),
+                            self.playlists_ui,
+                            ft.Row(                        
+                                alignment=ft.MainAxisAlignment.CENTER,
+                                controls=[self.add_playlist_btn]
+                            ),
+                            ft.Divider(),
+                        ]
+                    )
+                )
+            ],
         )
-    ],
-)
+
+     
 

@@ -7,7 +7,7 @@ from models import Playlist, Music
 import metadata.mutagen_mp3 as mutagen_mp3
 from utils import sanitize_metadata, get_audio_duration
 import time
-from commons import show_notification, NotificationType
+from views.commons import show_notification, NotificationType
 # Configuração do Spotify API
 spotify = Spotify(auth_manager=SpotifyClientCredentials(
     client_id="2ec55646db0248a6b36927d60e0be092",
@@ -30,7 +30,7 @@ class DownloadView():
     def __init__(self, app):
         if not hasattr(self, "_initialized"):
             print("Creating DownloadView")
-            self.app = app          
+            self.app = app      
             self.build()
     
     def list_files_in_directory(self, album_dir):
@@ -267,7 +267,7 @@ class DownloadView():
         )
 
 
-        self.content_ui = \
+        self.content = \
         ft.Container(            
             shadow=ft.BoxShadow(blur_radius=15,color=ft.colors.with_opacity(color=ft.colors.BLUE_400, opacity=0.3)),
             content=ft.Column(

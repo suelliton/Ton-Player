@@ -27,16 +27,16 @@
 #12 - adicionar snackbar de notificações quando iniciar e quando terminar de baixar um album
 #12.1- adicionar notificações quando atualizar metadados, quando salvar metadados
 #12.2- Investigar porque as vezes o nome do album fica o nome do artista quando baixa os metadados via shazam
-
-
-# 13 - organizar em pastas os componentes, criar pasta views
-
-
-#14.1 - mudar classes para herdar as classes do flet diretamente, sem gambiarras, para melhorar a leitura
-#14.2 - separar melhor os componentes a fim de diminuir códigos em um arquivo só
+#13 - organizar em pastas os componentes, criar pasta views
+#14.1 - mudar classes para herdar as classes do flet diretamente, sem gambiarras, para melhorar a leitura (É melhor deixar como está, fica mais flexível o fluxo de updates da aplicação)
 #14 - ao mudar de tab os elementos que são atualizados enquanto toca o audio não são encontrados pois eles são apagados da view, verificar possibilidade de apenas trocar eles de posição no array de controls da stack_main
 #14.3 - colocar round_border na barra de tabs inferior
-#14.4 - quando não houver músicas deve aparecer um ft.Text() avisando que não há músicas na playlist
+
+
+# 14.4 - quando não houver músicas deve aparecer um ft.Text() avisando que não há músicas na playlist
+
+
+#14.2 - separar melhor os componentes a fim de diminuir códigos em um arquivo só
 #15 - inluir nome do artista e album na pasta coverart para evitar conflitos de músicas com mesmo nome
 #16 - adicionar campo de texto para indicar a quantidade de faixas num album na listagem para download
 #17 - adicionar artista ao model playlist/album
