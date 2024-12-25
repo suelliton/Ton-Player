@@ -188,6 +188,7 @@ class LeftView():
                                 expand=True,
                                 content=ft.Text(
                                     playlist.name,
+                                    # tooltip=playlist.name,
                                     text_align=ft.TextAlign.START,
                                     overflow=ft.TextOverflow.ELLIPSIS,
                                     max_lines=1,

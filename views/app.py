@@ -40,16 +40,18 @@ class App():
             self.left_view.content.visible = False
             self.open_drawer_btn.visible = True           
             self.is_sm = True 
-             #hide album column and duration from list_musics_ui header
-            self.listen_view.header_list_musics_ui.controls[2].visible=False
-            self.listen_view.header_list_musics_ui.controls[3].visible=False
+            if self.selected_tab == 'tab_listen': 
+                #hide album column and duration from list_musics_ui header
+                self.listen_view.header_list_musics_ui.controls[2].visible=False
+                self.listen_view.header_list_musics_ui.controls[3].visible=False
         else:  
             self.left_view.content.visible = True           
             self.open_drawer_btn.visible = False
             self.is_sm = False
-             #show album column and duration from list_musics_ui header
-            self.listen_view.header_list_musics_ui.controls[2].visible=True
-            self.listen_view.header_list_musics_ui.controls[3].visible=True
+            if self.selected_tab == 'tab_listen': 
+                #show album column and duration from list_musics_ui header
+                self.listen_view.header_list_musics_ui.controls[2].visible=True
+                self.listen_view.header_list_musics_ui.controls[3].visible=True
         
         self.listen_view.update_list_musics_ui()       
         

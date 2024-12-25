@@ -32,8 +32,8 @@
 #14 - ao mudar de tab os elementos que são atualizados enquanto toca o audio não são encontrados pois eles são apagados da view, verificar possibilidade de apenas trocar eles de posição no array de controls da stack_main
 #14.3 - colocar round_border na barra de tabs inferior
 #14.4 - quando não houver músicas deve aparecer um ft.Text() avisando que não há músicas na playlist
-
 #16 - adicionar campo de texto para indicar a quantidade de faixas num album na listagem para download
+
 
 
 

@@ -194,7 +194,7 @@ class DownloadView():
                     alignment=ft.MainAxisAlignment.CENTER,   
                     spacing=20,
                     controls=[
-                        ft.Column(                                       
+                        ft.Column(                  
                             controls=[
                                 ft.Container(
                                     content=ft.Image(src=result['images'][-1]['url'] if result['images'][-1]['url'] else "default-playlist.jpg", fit=ft.ImageFit.COVER, height=80)
@@ -203,19 +203,22 @@ class DownloadView():
                         ),
                         ft.Column(                       
                             alignment=ft.CrossAxisAlignment.END,       
-                            width = 180, 
-                            expand_loose=True,
+                            # width = 220 if self.app.is_sm else 500,                            
+                            expand=True,
                             controls=[                        
                                 ft.Container(
                                     padding=ft.padding.only(left = 5),
-                                    content=ft.Text(value=result['name'],weight='bold',color=ft.colors.WHITE)
+                                    margin=ft.margin.only(top=0, bottom=0),
+                                    content=ft.Text(value=result['name'], overflow=ft.TextOverflow.ELLIPSIS,weight='bold',color=ft.colors.WHITE)
                                 ), 
                                 ft.Container(
-                                    padding=ft.padding.only(left = 5),
+                                    padding=ft.padding.only(left = 5, top=0, bottom=0),
+                                    margin=ft.margin.only(top=0, bottom=0),
                                     content=ft.Text(value=f'{result['total_tracks']} musics', color=ft.colors.WHITE, size=10)
                                 ),
                                 ft.Container(
                                     padding=ft.padding.only(left = 5),
+                                    margin=ft.margin.only(top=0, bottom=0),                                    
                                     content=ft.Text(value=result['artists'][0]['name'],color=ft.colors.WHITE)
                                 ),       
                                 # ft.Container(key=f'container_{result['id']}',visible=True)     
@@ -291,6 +294,7 @@ class DownloadView():
                             ft.Column(
                                 scroll=ft.ScrollMode.ALWAYS,
                                 height=500,
+                                expand=True,                 
                                 controls=[
                                     ft.Container(
                                         padding=ft.padding.all(20),

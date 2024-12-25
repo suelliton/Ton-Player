@@ -452,86 +452,87 @@ class ListenView():
         self.player_view = PlayerView(self.app)
         
         self.content = \
-        ft.Stack([
-            
-            ft.Container(
-                # col={'xs':12, 'sm':9}, 
-                padding=ft.padding.all(20),
-                expand=True,
-                bgcolor = ft.colors.BLACK45,
-                shadow=ft.BoxShadow(blur_radius=15,color=ft.colors.with_opacity(color=ft.colors.BLUE_400, opacity=0.3)),
-                content=\
-                ft.ResponsiveRow(
-                    controls=[
-                            ft.Column(
-                                col={'xs':0,'sm':0, 'md':4},                               
-                                controls=[
-                                    self.left_view.content
-                                ]
-                            ),
-                            ft.Column(
-                                    col={'sm':12, 'md':8},                                    
-                                    controls= [
-                                        ft.Row(
-                                            alignment= ft.MainAxisAlignment.CENTER,
-                                            height=20,
-                                            controls=[
-                                                # self.search_view.content_ui
-                                            ]
-                                        ),
-                                        ft.Row(
-                                            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                                            controls=[
-                                            ft.Icon(name=ft.icons.PLAY_ARROW_SHARP, color=ft.colors.WHITE),
-                                            self.playlist_title_ui,
-                                            ft.Column(
-                                                col=2,
-                                                alignment=ft.alignment.center_right,
+        ft.Stack(
+            alignment=ft.alignment.top_center,
+            controls=[                
+                ft.Container(
+                    # col={'xs':12, 'sm':9}, 
+                    padding=ft.padding.all(20),
+                    expand=True,
+                    bgcolor = ft.colors.BLACK45,
+                    shadow=ft.BoxShadow(blur_radius=15,color=ft.colors.with_opacity(color=ft.colors.BLUE_400, opacity=0.3)),
+                    content=\
+                    ft.ResponsiveRow(
+                        controls=[
+                                ft.Column(
+                                    col={'xs':0,'sm':0, 'md':4},                               
+                                    controls=[
+                                        self.left_view.content
+                                    ]
+                                ),
+                                ft.Column(
+                                        col={'sm':12, 'md':8},                                    
+                                        controls= [
+                                            ft.Row(
+                                                alignment= ft.MainAxisAlignment.CENTER,
+                                                height=20,
                                                 controls=[
-                                                    ft.Row(
-                                                        controls=[
-                                                            self.update_metadata_btn,
-                                                            self.save_mp3_metadata_btn
-                                                        ]
-                                                    )
+                                                    # self.search_view.content_ui
                                                 ]
-                                            ),                           
-                                        ],spacing=0),
-                                        #Deveria ter uma row pra scrolar pros lados 
-                                        ft.Column(                                             
-                                            height=350,                     
-                                            # scroll = ft.ScrollMode.ALWAYS,
-                                            controls=[
-                                                ft.Container(
-                                                    border_radius=10,     
-                                                    # expand=True, 
-                                                    alignment=ft.alignment.center,                                   
-                                                    content=self.header_list_musics_ui, 
-                                                ),                   
-                                                ft.Container( 
-                                                    border_radius=10,     
-                                                    expand=True, 
-                                                    alignment=ft.alignment.center,                                   
-                                                    content=self.list_musics_ui,
+                                            ),
+                                            ft.Row(
+                                                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                                                controls=[
+                                                ft.Icon(name=ft.icons.PLAY_ARROW_SHARP, color=ft.colors.WHITE),
+                                                self.playlist_title_ui,
+                                                ft.Column(
+                                                    col=2,
+                                                    alignment=ft.alignment.center_right,
+                                                    controls=[
+                                                        ft.Row(
+                                                            controls=[
+                                                                self.update_metadata_btn,
+                                                                self.save_mp3_metadata_btn
+                                                            ]
+                                                        )
+                                                    ]
                                                 ),                           
-                                            ]
-                                        ),
-                                        ft.Row(
-                                                alignment=ft.MainAxisAlignment.END,
+                                            ],spacing=0),
+                                            #Deveria ter uma row pra scrolar pros lados 
+                                            ft.Column(                                             
+                                                height=350,                     
+                                                # scroll = ft.ScrollMode.ALWAYS,
                                                 controls=[
-                                                    self.add_music_btn
+                                                    ft.Container(
+                                                        border_radius=10,     
+                                                        # expand=True, 
+                                                        alignment=ft.alignment.center,                                   
+                                                        content=self.header_list_musics_ui, 
+                                                    ),                   
+                                                    ft.Container( 
+                                                        border_radius=10,     
+                                                        expand=True, 
+                                                        alignment=ft.alignment.center,                                   
+                                                        content=self.list_musics_ui,
+                                                    ),                           
                                                 ]
-                                        ),
-                                        self.player_view.content
-                                    ],
-                            ),
-                    ]
-                    
-                )
-            ),
-            self.search_view.content,
+                                            ),
+                                            ft.Row(
+                                                    alignment=ft.MainAxisAlignment.END,
+                                                    controls=[
+                                                        self.add_music_btn
+                                                    ]
+                                            ),
+                                            self.player_view.content
+                                        ],
+                                ),
+                        ]
+                        
+                    )
+                ),
+                self.search_view.content,
             ]
-            ,alignment=ft.alignment.top_center
+            
         )
        
     
